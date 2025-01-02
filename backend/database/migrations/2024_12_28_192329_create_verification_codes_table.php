@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('verification_codes', function (Blueprint $table) {
-            $table->integer('id')->primary();
+            $table->integer('id')->primary()->autoIncrement();
             $table->string('email', 256);
             $table->char('code', 6)->index('verification_codes_code_idx');
             $table->dateTime('expires_at');

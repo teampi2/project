@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\CodeMail;
 use App\Models\Administrator;
 use App\Models\Coordinator;
 use App\Models\Monitor;
@@ -9,6 +10,7 @@ use App\Models\Student;
 use App\Models\VerificationCode;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class VerificationCodeController extends Controller
 {
@@ -45,18 +47,25 @@ class VerificationCodeController extends Controller
                 Monitor::where('name', $validated['name'])->where('email', $validated['email'])->exists() ||
                 Student::where('name', $validated['name'])->where('email', $validated['email'])->exists()
             ){
-                $numbe1 = strval(str_pad(mt_rand(0, 999), 6, '0', STR_PAD_LEFT));
-                $numbe2 = strval(str_pad(mt_rand(0, 999), 6, '0', STR_PAD_LEFT));
+                $numbe1 = strval(str_pad(mt_rand(0, 999), 3, '0', STR_PAD_LEFT));
+                $numbe2 = strval(str_pad(mt_rand(0, 999), 3, '0', STR_PAD_LEFT));
                 $code = $numbe1 . $numbe2;
 
-                VerificationCode::crate([
+                VerificationCode::create([
                     'email' => $validated['email'],
                     'code' =>  $code,
                     'expires_at' => now()->addMinutes(5)
                 ]);
 
+                $data = [
+                    'name' => $validated['name'],
+                    'code' => $code
+                ];
+
+                Mail::to($validated['email'])->send(new CodeMail($data));
+
                 return response()->json([
-                    'status' => "OK"
+                    'status' => "E-mail enviado com sucesso"
                 ], 200);
             }
         }
