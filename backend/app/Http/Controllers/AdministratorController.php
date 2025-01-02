@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Administrator;
+use Exception;
 use Illuminate\Http\Request;
 
 class AdministratorController extends Controller
@@ -15,30 +16,28 @@ class AdministratorController extends Controller
         //
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255'
-        ]);
-
-        $adm = Administrator::create([
-            'name' => $validated['name'],
-            'email' => $validated['email']
-        ]);
-
-        return response()->json([], 200);
+        try{
+            $validated = $request->validate([
+                'name' => 'required|string|max:255',
+                'email' => 'required|string|email|max:255'
+            ]);
+    
+            $adm = Administrator::create([
+                'name' => $validated['name'],
+                'email' => $validated['email']
+            ]);
+    
+            return response()->json([
+                'status' => "OK"
+            ], 200);
+        }catch(Exception $e){
+            return response()->json([
+                'error' => $e
+            ], 400);
+        }
+        
     }
 
     /**
