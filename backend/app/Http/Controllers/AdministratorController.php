@@ -24,7 +24,7 @@ class AdministratorController extends Controller
                 'email' => 'required|string|email|max:255'
             ]);
     
-            $adm = Administrator::create([
+            Administrator::create([
                 'name' => $validated['name'],
                 'email' => $validated['email']
             ]);
