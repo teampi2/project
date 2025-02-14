@@ -45,8 +45,8 @@ export function Menu() {
             <ListItemText primary="Início" />
           </ListItemButton>
         </ListItem>
-        <ListItem disablePadding to="/turmas" component={Link}>
-          <ListItemButton selected={pathname == '/turmas'}>
+        <ListItem disablePadding to="/classes" component={Link}>
+          <ListItemButton selected={pathname == '/classes'}>
             <ListItemIcon>
               <SchoolIcon />
             </ListItemIcon>

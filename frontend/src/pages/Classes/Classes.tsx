@@ -1,13 +1,13 @@
 import PageLayout from '@/layouts/PageLayout'
-import Classes from '@/templates/Classes'
+import ClassesList from '@/templates/ClassesList'
 import Tooltip from '@mui/material/Tooltip'
 import Fab from '@mui/material/Fab'
 import AddIcon from '@mui/icons-material/Add'
 
-export function Turmas() {
+export function Classes() {
   return (
     <PageLayout>
-      <Classes />
+      <ClassesList />
       <Tooltip title="Adicionar Turma">
         <Fab
           color="primary"
