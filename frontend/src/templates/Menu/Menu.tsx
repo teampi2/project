@@ -53,8 +53,8 @@ export function Menu() {
             <ListItemText primary="Turmas" />
           </ListItemButton>
         </ListItem>
-        <ListItem disablePadding>
-          <ListItemButton>
+        <ListItem disablePadding to="/activities" component={Link}>
+          <ListItemButton selected={pathname == '/activities'}>
             <ListItemIcon>
               <FactCheckIcon />
             </ListItemIcon>
