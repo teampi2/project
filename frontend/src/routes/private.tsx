@@ -1,5 +1,5 @@
 import Dashboard from '@/pages/Dasboard'
-import Turmas from '@/pages/Turmas'
+import Classes from '@/pages/Classes'
 
 const routes: IRoute[] = [
   {
@@ -7,8 +7,8 @@ const routes: IRoute[] = [
     element: <Dashboard />,
   },
   {
-    path: '/turmas',
-    element: <Turmas />,
+    path: '/classes',
+    element: <Classes />,
   },
 ]
 

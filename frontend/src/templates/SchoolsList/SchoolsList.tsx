@@ -1,7 +1,7 @@
 import Stack from '@mui/material/Stack'
 import Card from '@/components/Card'
 
-export function Schools() {
+export function SchoolsList() {
   return (
     <Stack
       useFlexGap

@@ -1,5 +1,5 @@
 import PageLayout from '@/layouts/PageLayout'
-import Schools from '@/templates/Schools'
+import SchoolsList from '@/templates/SchoolsList'
 import Tooltip from '@mui/material/Tooltip'
 import Fab from '@mui/material/Fab'
 import AddIcon from '@mui/icons-material/Add'
@@ -7,7 +7,7 @@ import AddIcon from '@mui/icons-material/Add'
 export function Dashboard() {
   return (
     <PageLayout>
-      <Schools />
+      <SchoolsList />
       <Tooltip title="Adicionar Escola">
         <Fab
           color="primary"
