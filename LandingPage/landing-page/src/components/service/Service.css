@@ -1,0 +1,66 @@
+.service-container {
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    gap: 16px;
+    border-radius: 10px;
+    padding: 34px;
+    cursor: pointer;
+    transition: all 0.3s ease-out;
+    width: 300px; 
+    min-height: 200px;
+    box-sizing: border-box;
+}
+
+.service-container:hover {
+    background-color: rgba(58, 189, 47, 0.2);
+    transition: all 0.3s ease-out;
+    transform: scale(1, 1) translateZ(0);
+}
+
+.service-icon > img {
+    width: 50px;
+}
+
+.service-head > h5 {
+    font-size: 22px;
+    font-weight: 500;
+}
+
+.service-body {
+    width: 100%;
+    font-size: 16px;
+    color: #5c5c5c;
+    white-space: normal;
+}
+
+@media screen and (max-width: 768px) {
+    .service-container {
+        padding: 20px;
+        gap: 12px;
+        width: 250px;
+    }
+    .service-icon > img {
+        width: 40px;
+    }
+    .service-head > h5 {
+        font-size: 18px;
+    }
+    .service-body {
+        font-size: 14px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .service-container {
+        padding: 16px;
+        gap: 8px;
+        width: 220px;
+    }
+    .service-head > h5 {
+        font-size: 16px;
+    }
+    .service-body {
+        font-size: 12px;
+    }
+}

@@ -1,0 +1,130 @@
+.navbar-container {
+    margin-top: 24px;
+    margin-bottom: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.logo>img {
+    width: 70px;
+    cursor: pointer;
+    filter: drop-shadow(0 0 10px rgb(58, 189, 47, 50));
+}
+
+
+.nav-items {
+    display: flex;
+    gap: 60px; 
+    list-style: none;
+}
+
+.nav-items>h3 {
+    font-weight: 500;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.nav-items>h3>a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.nav-items>h3:hover {
+    color: #36a863;
+    transition: all 0.3s ease-out;
+}
+
+.side-nav-items {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.side-nav-items>h3 {
+    font-size: 26px;
+    font-weight: 400;
+    color: #36a863;
+    cursor: pointer;
+}
+
+.side-nav-items>img {
+    width: 40px;
+    cursor: pointer;
+}
+
+.menu-toggle {
+    display: none;
+    font-size: 30px;
+    background: none;
+    border: none;
+    color: #36a863;
+    cursor: pointer;
+}
+
+@media (max-width: 768px) {
+    .menu-toggle {
+        display: block;
+    }
+    .nav-items {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 60px;
+        left: 0;
+        width: 100%;
+        background: #333;
+        text-align: center;
+        padding: 20px 0;
+    }
+    .nav-items.active {
+        display: flex;
+    }
+    .nav-items>h3 {
+        color: white;
+        padding: 10px 0;
+    }
+    .logo>img {
+        width: 50px;
+    }
+    .side-nav-items {
+        display: block;
+        text-align: center;
+        gap: 20px;
+    }
+    .side-nav-items>h3 {
+        font-size: 20px;
+    }
+    .side-nav-items>img {
+        width: 30px;
+    }
+}
+
+@media (min-width: 769px) {
+    .logo>img {
+        display: block;
+    }
+    .nav-items {
+        display: flex;
+        flex-direction: row;
+        position: relative;
+        padding: 0;
+        background: none;
+    }
+    .nav-items > h3 {
+        color: #000;
+        padding: 0;
+    }
+    .side-nav-items {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+    }
+    .side-nav-items>h3 {
+        font-size: 26px;
+        color: #36a863;
+    }
+    .side-nav-items>img {
+        width: 40px;
+    }
+}

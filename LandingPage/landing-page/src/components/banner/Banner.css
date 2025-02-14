@@ -1,0 +1,113 @@
+.banner-container {
+    display: flex;
+    background-color: rgba(58, 189, 47, 0.1);
+    padding: 60px;
+}
+
+.banner-content {
+    padding: 0 77px;
+    display: flex; 
+    flex-direction: column;
+    justify-content: center;
+    gap: 8px;
+}
+
+.banner-heading>h2 {
+    font-size: 52px;
+}
+
+.banner-heading>h2>b {
+    color: #36a863;
+}
+
+.banner-heading>p {
+    font-size: 18px;
+    font-weight: 500;
+    color: #5c5c5c;
+}
+
+.banner-buttons {
+    display: flex;
+    gap: 30px;
+    margin: 20px 0 0 10px;
+}
+
+.banner-buttons>button {
+    padding: 20px 40px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.banner-acess-button {
+    color: #FFF;
+    background-color: #36a863;
+    border: 2px solid #36a863;
+}
+
+.banner-learn-button {
+    color: #36a863;
+    background-color: #FFF;
+    border: 2px solid #36a863;
+}
+
+.banner-learn-button:hover {
+    color: #FFF;
+    background-color: #36a863;
+}
+
+.banner-acess-button:hover {
+    color: #FFF;
+    background-color: #0f7137;
+}
+
+.banner-graphic {
+    width: 100%;
+    position: relative;
+}
+
+.banner-graphic>img:first-child {
+    width: 500px;
+}
+
+.banner-graphic>img:last-child {
+    width: 330px;
+    position: absolute;
+    left: -10px;
+}
+
+@media screen and (max-width: 768px) {
+    .banner-graphic {
+        display: none;
+    }
+    .banner-container {
+        justify-content: center;
+        text-align: center;
+        padding: 40px;
+    }
+    .banner-content {
+        padding: 0;
+    }
+    .banner-heading h2 {
+        font-size: 32px;
+    }
+    .banner-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+    .banner-buttons button {
+        width: 100%;
+        max-width: 250px;
+    }
+}
+
+@media screen and (min-width: 1025px) {
+    .banner-graphic {
+        display: block;
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    .banner-graphic {
+        display: none;
+    }
+}

@@ -1,0 +1,82 @@
+.footer-container {
+    background-color: rgba(58, 189, 47);
+    display: flex;
+    justify-content: space-evenly;
+    color: #FFF;
+    padding: 30px;
+    height: 200px;
+    position: relative;
+}
+
+.footer-lists {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.footer-lists>li:first-child {
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 16px;
+}
+
+.footer-lists>li {
+    cursor: pointer;
+    font-weight: 300;
+    font-size: 14px;
+}
+
+.footer-lists>li>a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.footer-container {
+    background-color: rgba(58, 189, 47);
+    display: flex;
+    justify-content: space-evenly;
+    color: #FFF;
+    padding: 30px;
+    height: 200px;
+    position: relative;
+    flex-wrap: wrap; /* Permite que os itens se ajustem nas telas menores */
+}
+
+.footer-lists {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    text-align: center; /* Centraliza os itens das listas */
+}
+
+.footer-lists>li:first-child {
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 16px;
+}
+
+.footer-lists>li {
+    cursor: pointer;
+    font-weight: 300;
+    font-size: 14px;
+}
+
+@media (max-width: 768px) {
+    .footer-container {
+        flex-direction: column; /* Empilha as colunas do footer em telas menores */
+        align-items: center; /* Centraliza o conteúdo */
+        height: auto; /* Ajusta a altura conforme o conteúdo */
+    }
+
+    .footer-lists {
+        margin-bottom: 20px; /* Adiciona um espaçamento entre as listas */
+    }
+}
+
+@media (max-width: 768px) {
+    .footer-paragraph {
+        display: none; /* Esconde a div em dispositivos menores */
+    }
+}
