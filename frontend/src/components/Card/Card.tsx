@@ -2,7 +2,6 @@ import { Card as MuiCard } from '@mui/material'
 import CardHeader from '@mui/material/CardHeader'
 import CardContent from '@mui/material/CardContent'
 import Avatar from '@mui/material/Avatar'
-import { grey } from '@mui/material/colors'
 import Truncate from '@/components/Truncate'
 import { Link } from 'react-router-dom'
 
@@ -43,7 +42,7 @@ export function Card(props: CardProps) {
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'space-between',
-            bgcolor: grey[200],
+            bgcolor: 'grey.200',
           }}
         />
       </Link>
