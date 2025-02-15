@@ -67,7 +67,7 @@ export function UpdateClassDialog() {
       open={openUpdateDialog}
       onClose={handleToggleUpdateDialog}
     >
-      <DialogTitle>Criar turma</DialogTitle>
+      <DialogTitle>Editar turma</DialogTitle>
       <DialogContent>
         <Stack
           noValidate
@@ -112,7 +112,7 @@ export function UpdateClassDialog() {
       <DialogActions>
         <Button onClick={handleToggleUpdateDialog}>Cancelar</Button>
         <Button disabled={required} onClick={handleSubmit}>
-          Criar
+          Salvar
         </Button>
       </DialogActions>
     </Dialog>
