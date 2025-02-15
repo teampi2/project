@@ -9,10 +9,7 @@ interface SchoolsContextProps {
   handleToggleCreateDialog: () => void
   handleToggleUpdateDialog: () => void
   handleCreateSchool: (school: ICreateSchoolData) => void
-  handleUpdateSchool: (
-    id: number,
-    updatedData: Partial<ICreateSchoolData>
-  ) => void
+  handleUpdateSchool: (id: number, updatedData: IUpdateSchoolData) => void
   handleDeleteSchool: (id: number) => void
   handleFindSchool: (id: number) => ISchool | null
 }

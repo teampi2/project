@@ -7,6 +7,7 @@ import theme from '@/config/theme'
 import { CssBaseline, ThemeProvider } from '@mui/material'
 import HeaderProvider from '@/providers/HeaderProvider'
 import SchoolsProvider from '@/providers/SchoolsProvider'
+import ClassesProvider from '@/providers/ClassesProvider'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -14,7 +15,9 @@ createRoot(document.getElementById('root')!).render(
       <CssBaseline />
       <HeaderProvider>
         <SchoolsProvider>
-          <App />
+          <ClassesProvider>
+            <App />
+          </ClassesProvider>
         </SchoolsProvider>
       </HeaderProvider>
     </ThemeProvider>

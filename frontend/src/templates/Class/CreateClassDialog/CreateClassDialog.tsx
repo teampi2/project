@@ -2,29 +2,31 @@ import * as React from 'react'
 import Button from '@/components/Button'
 import Dialog from '@mui/material/Dialog'
 import TextField from '@mui/material/TextField'
+import MenuItem from '@mui/material/MenuItem'
+import InputLabel from '@mui/material/InputLabel'
+import FormControl from '@mui/material/FormControl'
+import Select, { SelectChangeEvent } from '@mui/material/Select'
 import DialogTitle from '@mui/material/DialogTitle'
 import DialogContent from '@mui/material/DialogContent'
 import DialogActions from '@mui/material/DialogActions'
 import Stack from '@mui/material/Stack'
-import useSchools from '@/hooks/useSchools'
+import useClasses from '@/hooks/useClasses'
 
-export function CreateSchoolDialog() {
-  const { openCreateDialog, handleToggleCreateDialog, handleCreateSchool } =
-    useSchools()
+export function CreateClassDialog() {
+  const { openCreateDialog, handleToggleCreateDialog, handleCreateClass } =
+    useClasses()
 
-  const [form, setForm] = React.useState<ICreateSchoolData>({
+  const [form, setForm] = React.useState<ICreateClassData>({
     name: '',
-    cnpj: '',
-    address: '',
-    email: '',
-    phone: '',
+    shift: 'MORNING',
+    academicYear: '',
   })
 
   const data = Object.fromEntries(
     Object.entries(form).filter(([, value]) => value != '')
   )
 
-  const required = !['name', 'cnpj', 'address', 'email'].every(
+  const required = !['name', 'shift', 'academicYear'].every(
     (field) => field in data
   )
 
@@ -32,8 +34,12 @@ export function CreateSchoolDialog() {
     setForm({ ...form, [e.target.name]: e.target.value })
   }
 
+  const handleSelect = (e: SelectChangeEvent) => {
+    setForm({ ...form, [e.target.name]: e.target.value })
+  }
+
   const handleSubmit = () => {
-    handleCreateSchool(data as ICreateSchoolData)
+    handleCreateClass(data as ICreateClassData)
     handleToggleCreateDialog()
   }
 
@@ -43,7 +49,7 @@ export function CreateSchoolDialog() {
       open={openCreateDialog}
       onClose={handleToggleCreateDialog}
     >
-      <DialogTitle>Criar escola</DialogTitle>
+      <DialogTitle>Criar turma</DialogTitle>
       <DialogContent>
         <Stack
           noValidate
@@ -56,35 +62,28 @@ export function CreateSchoolDialog() {
             fullWidth
             name="name"
             variant="filled"
-            label="Nome da escola (obrigatório)"
+            label="Nome da turma (obrigatório)"
             onChange={handleChange}
           />
+          <FormControl fullWidth variant="filled">
+            <InputLabel id="shift">Turno</InputLabel>
+            <Select
+              name="shift"
+              label="Turno"
+              labelId="shift"
+              defaultValue="MORNING"
+              onChange={handleSelect}
+            >
+              <MenuItem value="MORNING">Matutino</MenuItem>
+              <MenuItem value="AFTERNOON">Vespertino</MenuItem>
+              <MenuItem value="NIGHT">Noturno</MenuItem>
+            </Select>
+          </FormControl>
           <TextField
             fullWidth
-            name="cnpj"
+            name="academicYear"
             variant="filled"
-            label="CNPJ da escola (obrigatório)"
-            onChange={handleChange}
-          />
-          <TextField
-            fullWidth
-            name="address"
-            variant="filled"
-            label="Endereço (obrigatório)"
-            onChange={handleChange}
-          />
-          <TextField
-            fullWidth
-            name="email"
-            variant="filled"
-            label="E-mail (obrigatório)"
-            onChange={handleChange}
-          />
-          <TextField
-            fullWidth
-            name="phone"
-            variant="filled"
-            label="Telefone"
+            label="Ano letivo (obrigatório)"
             onChange={handleChange}
           />
         </Stack>

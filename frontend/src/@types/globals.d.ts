@@ -45,4 +45,12 @@ export declare global {
   }
 
   type IUpdateSchoolData = Partial<ICreateSchoolData>
+
+  type ICreateClassData = {
+    name: string
+    shift: 'MORNING' | 'AFTERNOON' | 'EVENING' | 'NIGHT'
+    academicYear: string
+  }
+
+  type IUpdateClassData = Partial<ICreateClassData>
 }
