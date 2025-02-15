@@ -9,8 +9,8 @@ import ListItem from '@mui/material/ListItem'
 import ListItemText from '@mui/material/ListItemText'
 import ListItemAvatar from '@mui/material/ListItemAvatar'
 import Avatar from '@mui/material/Avatar'
-import Button from '@mui/material/Button'
 import AssignmentIcon from '@mui/icons-material/AssignmentOutlined'
+import Button from '@/components/Button'
 
 interface ActivityItemProps {
   name: string
@@ -25,14 +25,13 @@ export function ActivityItem(props: ActivityItemProps) {
   const dueDate = format(props.dueDate, "EEEE, d 'de' MMM 'de' yyyy", {
     locale: ptBR,
   })
-
   const date = format(props.date, "d 'de' MMM 'de' yyyy", {
     locale: ptBR,
   })
 
   return (
     <Accordion>
-      <AccordionSummary color="grey.100" expandIcon={<ExpandMoreIcon />}>
+      <AccordionSummary expandIcon={<ExpandMoreIcon />}>
         <ListItem>
           <ListItemAvatar>
             <Avatar sx={{ bgcolor: 'primary.main' }}>
@@ -42,14 +41,16 @@ export function ActivityItem(props: ActivityItemProps) {
           <ListItemText primary={name} secondary={dueDate} />
         </ListItem>
       </AccordionSummary>
-      <AccordionDetails>
-        <Typography gutterBottom color="text.secondary" variant="body2">
+      <AccordionDetails sx={{ bgcolor: 'grey.100' }}>
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          sx={{ mt: 1, mb: 1 }}
+        >
           Postada em: {date}
         </Typography>
         <Typography gutterBottom>{description}</Typography>
-        <Button size="small" sx={{ textTransform: 'none' }}>
-          Ver detalhes
-        </Button>
+        <Button size="small">Ver detalhes</Button>
       </AccordionDetails>
     </Accordion>
   )

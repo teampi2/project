@@ -1,6 +1,7 @@
 import Dashboard from '@/pages/Dasboard'
 import Classes from '@/pages/Classes'
 import Activities from '@/pages/Activities'
+import Settings from '@/pages/Settings'
 
 const routes: IRoute[] = [
   {
@@ -14,6 +15,10 @@ const routes: IRoute[] = [
   {
     path: '/activities',
     element: <Activities />,
+  },
+  {
+    path: '/settings',
+    element: <Settings />,
   },
 ]
 

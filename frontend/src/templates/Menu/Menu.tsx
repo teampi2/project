@@ -1,4 +1,4 @@
-import Drawer from '@mui/material/Drawer'
+import MuiDrawer from '@mui/material/Drawer'
 import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
 import ListItemButton from '@mui/material/ListItemButton'
@@ -10,67 +10,79 @@ import HomeIcon from '@mui/icons-material/HomeOutlined'
 import SchoolIcon from '@mui/icons-material/SchoolOutlined'
 import FactCheckIcon from '@mui/icons-material/FactCheckOutlined'
 import SettingsIcon from '@mui/icons-material/SettingsOutlined'
+import { styled } from '@mui/material/styles'
 import { useLocation, Link } from 'react-router-dom'
 import useHeader from '@/hooks/useHeader'
 
-const drawerWidth = 300
+const Drawer = styled(MuiDrawer)({
+  '& .MuiDrawer-paper': {
+    width: 300,
+  },
+})
 
-export function Menu() {
+interface ListItemLinkProps {
+  to: string
+  children: React.ReactNode
+}
+
+function ListItemLink(props: ListItemLinkProps) {
+  const { to, children } = props
   const { pathname } = useLocation()
+  const { toggleMenu } = useHeader()
+
+  return (
+    <ListItemButton
+      to={to}
+      component={Link}
+      onClick={toggleMenu}
+      selected={pathname == to}
+    >
+      {children}
+    </ListItemButton>
+  )
+}
+export function Menu() {
   const { menu, toggleMenu } = useHeader()
 
   return (
-    <Drawer
-      sx={{
-        width: drawerWidth,
-        flexShrink: 0,
-        '& .MuiDrawer-paper': {
-          width: drawerWidth,
-          boxSizing: 'border-box',
-        },
-      }}
-      open={menu}
-      hideBackdrop={true}
-      onClose={toggleMenu}
-      anchor="left"
-    >
+    <Drawer open={menu} onClose={toggleMenu} anchor="left">
       <Toolbar />
       <Divider />
       <List>
-        <ListItem disablePadding to="/dashboard" component={Link}>
-          <ListItemButton selected={pathname == '/dashboard'}>
+        <ListItem disablePadding>
+          <ListItemLink to="/dashboard">
             <ListItemIcon>
               <HomeIcon />
             </ListItemIcon>
             <ListItemText primary="Início" />
-          </ListItemButton>
+          </ListItemLink>
         </ListItem>
-        <ListItem disablePadding to="/classes" component={Link}>
-          <ListItemButton selected={pathname == '/classes'}>
+        <ListItem disablePadding>
+          <ListItemLink to="/classes">
             <ListItemIcon>
               <SchoolIcon />
             </ListItemIcon>
             <ListItemText primary="Turmas" />
-          </ListItemButton>
+          </ListItemLink>
         </ListItem>
-        <ListItem disablePadding to="/activities" component={Link}>
-          <ListItemButton selected={pathname == '/activities'}>
+        <ListItem disablePadding>
+          <ListItemLink to="/activities">
             <ListItemIcon>
               <FactCheckIcon />
             </ListItemIcon>
             <ListItemText primary="Pendentes" />
-          </ListItemButton>
+          </ListItemLink>
         </ListItem>
       </List>
       <Divider />
       <List>
         <ListItem disablePadding>
-          <ListItemButton>
+          <ListItemLink to="/settings">
             <ListItemIcon>
               <SettingsIcon />
             </ListItemIcon>
             <ListItemText primary="Configurações" />
-          </ListItemButton>
+          </ListItemLink>
         </ListItem>
       </List>
     </Drawer>

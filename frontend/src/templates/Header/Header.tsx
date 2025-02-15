@@ -31,7 +31,7 @@ export function Header() {
             </IconButton>
           </Tooltip>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} />
-          <Link to="#">
+          <Link to="/settings">
             <Avatar />
           </Link>
         </Toolbar>

@@ -1,26 +1,17 @@
-import * as React from 'react'
 import Typography, { TypographyProps } from '@mui/material/Typography'
+import { styled } from '@mui/material/styles'
 
 interface TruncateProps extends TypographyProps {
   width: number | string
-  children: React.ReactNode
 }
 
-export function Truncate(props: TruncateProps) {
-  const { width, sx, children, ...rest } = props
+const StyledTypography = styled(Typography)<TruncateProps>(({ width }) => ({
+  width,
+  overflow: 'hidden',
+  whiteSpace: 'nowrap',
+  textOverflow: 'ellipsis',
+}))
 
-  return (
-    <Typography
-      noWrap
-      sx={{
-        width: width,
-        textOverflow: 'ellipsis',
-        overflow: 'hidden',
-        ...sx,
-      }}
-      {...rest}
-    >
-      {children}
-    </Typography>
-  )
+export function Truncate(props: TruncateProps) {
+  return <StyledTypography noWrap {...props} />
 }
