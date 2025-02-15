@@ -3,16 +3,19 @@ import { createRoot } from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'
 
-import { CssBaseline, ThemeProvider } from '@mui/material'
 import theme from '@/config/theme'
+import { CssBaseline, ThemeProvider } from '@mui/material'
 import HeaderProvider from '@/providers/HeaderProvider'
+import SchoolsProvider from '@/providers/SchoolsProvider'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <HeaderProvider>
-        <App />
+        <SchoolsProvider>
+          <App />
+        </SchoolsProvider>
       </HeaderProvider>
     </ThemeProvider>
   </StrictMode>

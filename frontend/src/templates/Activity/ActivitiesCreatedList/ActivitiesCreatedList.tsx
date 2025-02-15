@@ -1,11 +1,12 @@
 import Stack from '@mui/material/Stack'
-import ActivityItem from '@/templates/ActivityItem'
+import ActivityItem from '@/templates/Activity/ActivityItem'
 
-export function ActivitiesSubmitedList() {
+export function ActivitiesCreatedList() {
   return (
     <Stack>
-      {[...Array(2)].map((_, index) => (
+      {[...Array(8)].map((_, index) => (
         <ActivityItem
+          key={index}
           name={'Atividade ' + ++index}
           dueDate={new Date()}
           date={new Date()}
