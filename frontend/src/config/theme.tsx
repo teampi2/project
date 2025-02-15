@@ -1,5 +1,5 @@
 import { createTheme } from '@mui/material'
-import { green } from '@mui/material/colors'
+import { green, blue } from '@mui/material/colors'
 
 const theme = createTheme({
   cssVariables: true,
@@ -7,6 +7,9 @@ const theme = createTheme({
     mode: 'light',
     primary: {
       main: green[600],
+    },
+    secondary: {
+      main: blue[600],
     },
   },
 })
