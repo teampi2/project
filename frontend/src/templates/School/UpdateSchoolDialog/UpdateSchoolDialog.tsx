@@ -5,7 +5,7 @@ import TextField from '@mui/material/TextField'
 import DialogTitle from '@mui/material/DialogTitle'
 import DialogContent from '@mui/material/DialogContent'
 import DialogActions from '@mui/material/DialogActions'
-import Box from '@mui/material/Box'
+import Stack from '@mui/material/Stack'
 import useSchools from '@/hooks/useSchools'
 
 export function UpdateSchoolDialog() {
@@ -61,11 +61,12 @@ export function UpdateSchoolDialog() {
     <Dialog fullWidth open={open} onClose={handleClose}>
       <DialogTitle>Editar escola</DialogTitle>
       <DialogContent>
-        <Box
+        <Stack
           noValidate
           component="form"
           autoComplete="off"
-          sx={{ '& .MuiTextField-root': { m: 1 } }}
+          direction="column"
+          spacing={1}
         >
           <TextField
             fullWidth
@@ -107,7 +108,7 @@ export function UpdateSchoolDialog() {
             value={form.phone}
             onChange={handleChange}
           />
-        </Box>
+        </Stack>
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose}>Cancelar</Button>

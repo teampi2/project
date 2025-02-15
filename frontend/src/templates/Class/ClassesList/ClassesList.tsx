@@ -1,7 +1,10 @@
 import Stack from '@mui/material/Stack'
-import Card from '@/templates/Card'
+import ClassesListItem from '@/templates/Class/ClassesListItem'
+import useClasses from '@/hooks/useClasses'
 
 export function ClassesList() {
+  const { classes } = useClasses()
+
   return (
     <Stack
       useFlexGap
@@ -9,12 +12,8 @@ export function ClassesList() {
       sx={{ flexWrap: 'wrap' }}
       spacing={{ xs: 1, sm: 2 }}
     >
-      {[...Array(8)].map((_, index) => (
-        <Card
-          to="#"
-          title={'Turma ' + ++index}
-          subtitle="Nome do Coodenador(a)"
-        />
+      {classes.map((cls, index) => (
+        <ClassesListItem key={index} cls={cls} />
       ))}
     </Stack>
   )
