@@ -1,5 +1,5 @@
 import PageLayout from '@/layouts/PageLayout'
-import ProfileSettings from '@/templates/ProfileSettings'
+import ProfileSettings from '@/templates/User/ProfileSettings'
 import Box from '@mui/material/Box'
 
 export function Settings() {

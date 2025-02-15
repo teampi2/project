@@ -1,11 +1,12 @@
 import Stack from '@mui/material/Stack'
-import ActivityItem from '@/templates/ActivityItem'
+import ActivityItem from '@/templates/Activity/ActivityItem'
 
 export function ActivitiesPendingList() {
   return (
     <Stack>
       {[...Array(1)].map((_, index) => (
         <ActivityItem
+          key={index}
           name={'Atividade ' + ++index}
           dueDate={new Date()}
           date={new Date()}

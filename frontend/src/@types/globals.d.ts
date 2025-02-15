@@ -6,8 +6,8 @@ export declare global {
 
   interface IEntity {
     id: number
-    createdAt: string
-    updatedAt: string
+    createdAt: Date
+    updatedAt: Date
   }
 
   interface ISchool extends IEntity {
@@ -15,7 +15,7 @@ export declare global {
     cnpj: string
     address: string
     email: string
-    phone: string
+    phone?: string
     accountId: number
   }
 
@@ -35,4 +35,14 @@ export declare global {
     accountId: number
     classId: number
   }
+
+  type ICreateSchoolData = {
+    name: string
+    cnpj: string
+    address: string
+    email: string
+    phone?: string
+  }
+
+  type IUpdateSchoolData = Partial<ICreateSchoolData>
 }

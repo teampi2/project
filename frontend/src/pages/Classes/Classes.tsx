@@ -1,5 +1,5 @@
 import PageLayout from '@/layouts/PageLayout'
-import ClassesList from '@/templates/ClassesList'
+import ClassesList from '@/templates/Class/ClassesList'
 import Tooltip from '@mui/material/Tooltip'
 import Fab from '@mui/material/Fab'
 import AddIcon from '@mui/icons-material/Add'

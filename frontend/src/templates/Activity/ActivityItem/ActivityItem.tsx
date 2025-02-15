@@ -41,7 +41,7 @@ export function ActivityItem(props: ActivityItemProps) {
           <ListItemText primary={name} secondary={dueDate} />
         </ListItem>
       </AccordionSummary>
-      <AccordionDetails sx={{ bgcolor: 'grey.100' }}>
+      <AccordionDetails sx={{ bgcolor: 'primary.light' }}>
         <Typography
           variant="body2"
           color="text.secondary"

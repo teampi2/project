@@ -1,5 +1,5 @@
 import Stack from '@mui/material/Stack'
-import Card from '@/components/Card'
+import Card from '@/templates/Card'
 
 export function ClassesList() {
   return (
