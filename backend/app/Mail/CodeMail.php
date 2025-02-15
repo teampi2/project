@@ -14,13 +14,13 @@ class CodeMail extends Mailable
     use Queueable, SerializesModels;
 
 
-    public $data;
+    public $code;
     /**
      * Create a new message instance.
      */
-    public function __construct($data)
+    public function __construct($code)
     {
-        $this->data = $data;
+        $this->code = $code;
     }
 
     /**
@@ -40,7 +40,7 @@ class CodeMail extends Mailable
     {
         return new Content(
             view: 'emails.Code',
-            with: ['data' => $this->data],
+            with: ['code' => $this->code],
         );
     }
 

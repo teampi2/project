@@ -14,32 +14,48 @@ use Illuminate\Support\Facades\Mail;
 
 class VerificationCodeController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         //
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+    public function validate(Request $request){
+        return $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255',
+        ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    public function create($email)
+    {
+        $numbe1 = strval(str_pad(mt_rand(0, 999), 3, '0', STR_PAD_LEFT));
+        $numbe2 = strval(str_pad(mt_rand(0, 999), 3, '0', STR_PAD_LEFT));
+        $code = $numbe1 . $numbe2;
+
+        $verificationCode = VerificationCode::create([
+            'email' => $email,
+            'code' =>  $code,
+            'expires_at' => now()->addMinutes(5)
+        ]);
+
+        return $verificationCode;
+    }
+
+    public function enviarEmail($email, $code){
+        Mail::to($email)->send(new CodeMail($code));
+    }
+
+    public function buscar($email, $code){
+        return VerificationCode::where([
+            'email' => $email,
+            'code' => $code,
+        ])->first();
+    }
+
     public function store(Request $request)
     {
         try{
-            $validated = $request->validate([
-                'name' => 'required|string|max:255',
-                'email' => 'required|string|email|max:255',
-            ]);
+            $validated = VerificationCode::validate($request);
 
             if(
                 Administrator::where('name', $validated['name'])->where('email', $validated['email'])->exists() ||
@@ -47,22 +63,9 @@ class VerificationCodeController extends Controller
                 Monitor::where('name', $validated['name'])->where('email', $validated['email'])->exists() ||
                 Student::where('name', $validated['name'])->where('email', $validated['email'])->exists()
             ){
-                $numbe1 = strval(str_pad(mt_rand(0, 999), 3, '0', STR_PAD_LEFT));
-                $numbe2 = strval(str_pad(mt_rand(0, 999), 3, '0', STR_PAD_LEFT));
-                $code = $numbe1 . $numbe2;
+                $code = VerificationCode::create($validated['email']);
 
-                VerificationCode::create([
-                    'email' => $validated['email'],
-                    'code' =>  $code,
-                    'expires_at' => now()->addMinutes(5)
-                ]);
-
-                $data = [
-                    'name' => $validated['name'],
-                    'code' => $code
-                ];
-
-                Mail::to($validated['email'])->send(new CodeMail($data));
+                VerificationCode::enviarEmail($validated['email'], $code);
 
                 return response()->json([
                     'status' => "E-mail enviado com sucesso"
@@ -74,37 +77,5 @@ class VerificationCodeController extends Controller
                 'error' => "$e"
             ], 400);
         }
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
     }
 }

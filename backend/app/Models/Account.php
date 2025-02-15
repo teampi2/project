@@ -74,11 +74,6 @@ class Account extends Authenticatable
 		return $this->hasMany(ActivityComment::class);
 	}
 
-	public function administrator()
-	{
-		return $this->hasOne(Administrator::class);
-	}
-
 	public function announcements()
 	{
 		return $this->hasMany(Announcement::class);
@@ -92,11 +87,6 @@ class Account extends Authenticatable
 	public function classes()
 	{
 		return $this->hasMany(Classes::class);
-	}
-
-	public function coordinator()
-	{
-		return $this->hasOne(Coordinator::class);
 	}
 
 	public function lesson_comments()
@@ -114,14 +104,24 @@ class Account extends Authenticatable
 		return $this->hasMany(Lesson::class);
 	}
 
-	public function monitor()
-	{
-		return $this->hasOne(Monitor::class);
-	}
-
 	public function schools()
 	{
 		return $this->hasMany(School::class);
+	}
+
+	public function administrator()
+	{
+		return $this->hasOne(Administrator::class);
+	}
+
+	public function coordinator()
+	{
+		return $this->hasOne(Coordinator::class);
+	}
+
+	public function monitor()
+	{
+		return $this->hasOne(Monitor::class);
 	}
 
 	public function student()

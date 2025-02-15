@@ -10,26 +10,27 @@ use Illuminate\Http\Request;
 
 class AdministratorController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function create()
+    public function validate(Request $request){
+        return $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255'
+        ]);
+    }
+
+    public function create($validated)
     {
-        
+        Administrator::create([
+            'name' => $validated['name'],
+            'email' => $validated['email']
+        ]);
     }
 
     public function store(Request $request)
     {
         try{
-            $validated = $request->validate([
-                'name' => 'required|string|max:255',
-                'email' => 'required|string|email|max:255'
-            ]);
+            $validated = Administrator::validate($request);
     
-            Administrator::create([
-                'name' => $validated['name'],
-                'email' => $validated['email']
-            ]);
+            Administrator::create($validated);
     
             return response()->json([
                 'status' => "OK"
@@ -55,35 +56,42 @@ class AdministratorController extends Controller
         
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function show(Request $request)
     {
-        //
+        try{
+            $user = Administrator::findbyId($request['id']);
+            return $user;
+        }catch(Exception $e){
+            return $e;
+        }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function edit($validated)
     {
-        //
+        Administrator::where('id', $validated['id'])->update([
+            'name' => $validated['name'],
+            'email' => $validated['email']
+        ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function update(Request $request)
     {
-        //
+        try{
+            $validated = Administrator::validate($request);
+
+            Administrator::edit($validated);
+        }
+        catch(Exception $e){
+
+        }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy(Request $request)
     {
-        //
+        try{
+            Administrator::destroy($request['id']);
+        }catch(Exception $e){
+            return $e;
+        }
     }
 }
