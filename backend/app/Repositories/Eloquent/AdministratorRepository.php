@@ -28,9 +28,9 @@ class AdministratorRepository implements AdministratorRepositoryInterface
         ];
     }
 
-    public function findByEmail($email)
+    public function findByName($name)
     {
-        $Administrator = Administrator::with(['account'])->where('email', $email)->first();
+        $Administrator = Administrator::with(['account'])->where('name', $name)->first();
 
         if (!$Administrator) {
             return null;

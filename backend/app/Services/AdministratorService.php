@@ -2,32 +2,25 @@
 
 namespace App\Services;
 
-use App\Repositories\Contracts\AccountRepositoryInterface;
+use App\Repositories\Contracts\AdministratorRepositoryInterface;
 use Illuminate\Support\Facades\Hash;
 
-class AccountService
+class AdministratorService
 {
     protected $repository;    
 
-    public function __construct(AccountRepositoryInterface $repository)
+    public function __construct(AdministratorRepositoryInterface $repository)
     {
         $this->repository = $repository;
     }
 
     public function create(array $data)
     {
-        if($data['password']){
-            $data['password'] = Hash::make($data['password']);
-        }
         return $this->repository->create($data);
     }
 
     public function update($id, array $data)
     {
-        if($data['password']){
-            $data['password'] = Hash::make($data['password']);
-        }
-
         return $this->repository->update($id, $data);
     }
 
@@ -36,9 +29,9 @@ class AccountService
         return $this->repository->find($id);
     }
 
-    public function showByEmail($email)
+    public function showByEmail($name)
     {
-        return $this->repository->findByEmail($email);
+        return $this->repository->findByName($name);
     }
 
     public function delete($id)

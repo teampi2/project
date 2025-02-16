@@ -10,7 +10,7 @@ Route::post('/generate_code', [VerificationCodeController::class, 'store']);
 Route::post('/login', [ApiController::class, 'login']);//realiza login e cria token
 Route::post('/logout', [ApiController::class, 'logout'])->middleware('role:ADMINISTRATOR|COORDENATOR|MONITOR|STUDENT');
 
-Route::prefix('admin')->middleware('role:ADMINISTRATOR')->group(function () {
+Route::prefix('admin')->middleware(['auth:sanctum','role:ADMINISTRATOR'])->group(function () {
     Route::post('/register', [ApiController::class, 'registerAdmin']);//registrar email de admin
     Route::put('/update', [ApiController::class, 'updateAdmin']);//atualizar email de admin
     Route::get('/show', [ApiController::class, 'showAdmin']);
@@ -45,7 +45,7 @@ Route::prefix('student')->middleware('role:ADMINISTRATOR|COORDENATOR|MONITOR')->
 Route::prefix('account')->group(function () {
     Route::post('/register', [ApiController::class, 'registerAccount']);//
     Route::put('/update', [ApiController::class, 'updateAccount'])->middleware('role:ADMINISTRATOR|COORDENATOR|MONITOR|STUDENT');//
-    Route::get('/show', [ApiController::class, 'showAccount'])->middleware('role:ADMINISTRATOR|COORDENATOR|MONITOR|STUDENT');
+    Route::get('/show', [ApiController::class, 'showAccount'])->middleware(['auth:sanctum','role:ADMINISTRATOR|COORDENATOR|MONITOR|STUDENT']);
     Route::get('/all_show', [ApiController::class, 'allShowAccount'])->middleware('role:ADMINISTRATOR|COORDENATOR|MONITOR|STUDENT');
     Route::delete('/delete', [ApiController::class, 'deleteAccount'])->middleware('role:ADMINISTRATOR|COORDENATOR|MONITOR|STUDENT');//
 });
