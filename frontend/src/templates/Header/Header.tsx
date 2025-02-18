@@ -9,7 +9,7 @@ import useHeader from '@/hooks/useHeader'
 import { Link } from 'react-router-dom'
 
 export function Header() {
-  const { toggleMenu } = useHeader()
+  const { handleToggleMenu } = useHeader()
 
   return (
     <>
@@ -24,8 +24,8 @@ export function Header() {
               size="large"
               edge="start"
               color="inherit"
+              onClick={handleToggleMenu}
               sx={{ mr: 2 }}
-              onClick={toggleMenu}
             >
               <MenuIcon />
             </IconButton>

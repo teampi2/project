@@ -1,5 +1,5 @@
 import * as React from 'react'
-import MuiCard from '@mui/material/Card'
+import MuiCard, { CardProps as MuiCardProps } from '@mui/material/Card'
 import CardHeader from '@mui/material/CardHeader'
 import CardContent from '@mui/material/CardContent'
 import Avatar from '@mui/material/Avatar'
@@ -9,21 +9,14 @@ import { Link } from 'react-router-dom'
 import Truncate from '@/components/Truncate'
 import stringToColor from '@/functions/stringToColor'
 
-interface CardProps {
+interface CardProps extends MuiCardProps {
   to: string
   title: string
   subtitle: string
   avatar?: string
   action?: React.ReactNode
+  width?: number
 }
-
-const StyledCard = styled(MuiCard)({
-  width: 300,
-})
-
-const StyledCardHeader = styled(CardHeader)({
-  height: 100,
-})
 
 const StyledAvatar = styled(Avatar)({
   width: 75,
@@ -76,16 +69,16 @@ export const StyledMenu = styled((props: MenuProps) => (
 }))
 
 export function Card(props: CardProps) {
-  const { to, title, subtitle, avatar, action } = props
+  const { width = 300, to, title, subtitle, avatar, action } = props
 
   return (
-    <StyledCard>
+    <MuiCard>
       <Link to={to}>
-        <StyledCardHeader
+        <CardHeader
           sx={{ bgcolor: stringToColor(title) }}
           title={
             <Truncate
-              width={228}
+              width={width - 72}
               variant="h6"
               sx={{ textTransform: 'uppercase', fontWeight: 400, mb: 2 }}
             >
@@ -94,7 +87,7 @@ export function Card(props: CardProps) {
           }
           subheader={
             <Truncate
-              width={193}
+              width={width - 107}
               variant="body2"
               sx={{ color: 'text.secondary' }}
             >
@@ -107,6 +100,6 @@ export function Card(props: CardProps) {
       <CardContent sx={{ height: 137 }}>
         <StyledAvatar src={avatar} />
       </CardContent>
-    </StyledCard>
+    </MuiCard>
   )
 }
