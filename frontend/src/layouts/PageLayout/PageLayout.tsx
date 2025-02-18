@@ -1,4 +1,4 @@
-import Container from '@mui/material/Container'
+import Box from '@mui/material/Box'
 import Header from '@/templates/Header'
 import Menu from '@/templates/Menu'
 
@@ -12,10 +12,12 @@ export function PageLayout(props: PageLayoutProps) {
   return (
     <>
       <Header />
-      <Menu />
-      <Container maxWidth="xl" sx={{ paddingY: { xs: 2, md: 3 } }}>
-        {children}
-      </Container>
+      <Box sx={{ display: 'flex' }}>
+        <Menu />
+        <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+          {children}
+        </Box>
+      </Box>
     </>
   )
 }

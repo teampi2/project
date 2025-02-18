@@ -6,14 +6,14 @@ interface HeaderProviderProps {
 }
 
 export default function HeaderProvider({ children }: HeaderProviderProps) {
-  const [menu, setMenu] = React.useState(false)
+  const [openMenu, setOpenMenu] = React.useState(false)
 
-  const toggleMenu = () => {
-    setMenu(!menu)
+  const handleToggleMenu = () => {
+    setOpenMenu(!openMenu)
   }
 
   return (
-    <HeaderContext.Provider value={{ menu, toggleMenu }}>
+    <HeaderContext.Provider value={{ openMenu, handleToggleMenu }}>
       {children}
     </HeaderContext.Provider>
   )

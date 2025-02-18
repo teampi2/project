@@ -1,56 +1,112 @@
+import React from 'react'
 import MuiDrawer from '@mui/material/Drawer'
+import Toolbar from '@mui/material/Toolbar'
 import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
 import ListItemButton from '@mui/material/ListItemButton'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
-import Toolbar from '@mui/material/Toolbar'
 import Divider from '@mui/material/Divider'
 import HomeIcon from '@mui/icons-material/HomeOutlined'
 import SchoolIcon from '@mui/icons-material/SchoolOutlined'
 import FactCheckIcon from '@mui/icons-material/FactCheckOutlined'
 import SettingsIcon from '@mui/icons-material/SettingsOutlined'
-import { styled } from '@mui/material/styles'
+import { styled, Theme, CSSObject, useTheme } from '@mui/material/styles'
+import useMediaQuery from '@mui/material/useMediaQuery'
 import { useLocation, Link } from 'react-router-dom'
 import useHeader from '@/hooks/useHeader'
 
-const Drawer = styled(MuiDrawer)({
-  '& .MuiDrawer-paper': {
-    width: 300,
+const drawerWidth = 300
+
+const openedMixin = (theme: Theme): CSSObject => ({
+  width: drawerWidth,
+  transition: theme.transitions.create('width', {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.enteringScreen,
+  }),
+  overflowX: 'hidden',
+})
+
+const closedMixin = (theme: Theme): CSSObject => ({
+  transition: theme.transitions.create('width', {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.leavingScreen,
+  }),
+  overflowX: 'hidden',
+  width: `calc(${theme.spacing(7)} + 1px)`,
+  [theme.breakpoints.up('sm')]: {
+    width: `calc(${theme.spacing(8)} + 1px)`,
   },
 })
+
+interface StyledDrawerProps {
+  open: boolean
+  variant: 'permanent' | 'temporary'
+}
+
+const StyledDrawer = styled(MuiDrawer)<StyledDrawerProps>(
+  ({ theme, open, variant }) =>
+    variant === 'permanent'
+      ? {
+          width: drawerWidth,
+          flexShrink: 0,
+          whiteSpace: 'nowrap',
+          boxSizing: 'border-box',
+          ...(open
+            ? {
+                ...openedMixin(theme),
+                '& .MuiDrawer-paper': openedMixin(theme),
+              }
+            : {
+                ...closedMixin(theme),
+                '& .MuiDrawer-paper': closedMixin(theme),
+              }),
+        }
+      : {
+          '& .MuiDrawer-paper': { width: drawerWidth },
+        }
+)
 
 interface ListItemLinkProps {
   to: string
   children: React.ReactNode
+  onClick?: () => void
 }
 
-function ListItemLink(props: ListItemLinkProps) {
-  const { to, children } = props
+const ListItemLink = ({ to, children, onClick }: ListItemLinkProps) => {
   const { pathname } = useLocation()
-  const { toggleMenu } = useHeader()
-
   return (
     <ListItemButton
-      to={to}
+      onClick={onClick}
       component={Link}
-      onClick={toggleMenu}
-      selected={pathname == to}
+      to={to}
+      selected={pathname === to}
     >
       {children}
     </ListItemButton>
   )
 }
-export function Menu() {
-  const { menu, toggleMenu } = useHeader()
 
-  return (
-    <Drawer open={menu} onClose={toggleMenu} anchor="left">
+export function Menu() {
+  const { openMenu, handleToggleMenu } = useHeader()
+  const theme = useTheme()
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
+  const variant: 'temporary' | 'permanent' = isMobile
+    ? 'temporary'
+    : 'permanent'
+
+  const handleItemClick = () => {
+    if (isMobile) {
+      handleToggleMenu()
+    }
+  }
+
+  const drawerContent = (
+    <>
       <Toolbar />
-      <Divider />
       <List>
         <ListItem disablePadding>
-          <ListItemLink to="/dashboard">
+          <ListItemLink to="/dashboard" onClick={handleItemClick}>
             <ListItemIcon>
               <HomeIcon />
             </ListItemIcon>
@@ -58,7 +114,7 @@ export function Menu() {
           </ListItemLink>
         </ListItem>
         <ListItem disablePadding>
-          <ListItemLink to="/classes">
+          <ListItemLink to="/classes" onClick={handleItemClick}>
             <ListItemIcon>
               <SchoolIcon />
             </ListItemIcon>
@@ -66,7 +122,7 @@ export function Menu() {
           </ListItemLink>
         </ListItem>
         <ListItem disablePadding>
-          <ListItemLink to="/activities">
+          <ListItemLink to="/activities" onClick={handleItemClick}>
             <ListItemIcon>
               <FactCheckIcon />
             </ListItemIcon>
@@ -77,7 +133,7 @@ export function Menu() {
       <Divider />
       <List>
         <ListItem disablePadding>
-          <ListItemLink to="/settings">
+          <ListItemLink to="/settings" onClick={handleItemClick}>
             <ListItemIcon>
               <SettingsIcon />
             </ListItemIcon>
@@ -85,6 +141,19 @@ export function Menu() {
           </ListItemLink>
         </ListItem>
       </List>
-    </Drawer>
+    </>
+  )
+
+  return (
+    <StyledDrawer
+      hideBackdrop
+      open={openMenu}
+      variant={variant}
+      onClose={handleToggleMenu}
+      ModalProps={{ keepMounted: true }}
+      sx={{ display: 'block' }}
+    >
+      {drawerContent}
+    </StyledDrawer>
   )
 }
