@@ -24,14 +24,24 @@ class AdministratorService
         return $this->repository->update($id, $data);
     }
 
+    public function all()
+    {
+        return $this->repository->all();
+    }
+
     public function show($id)
     {
         return $this->repository->find($id);
     }
 
-    public function showByEmail($name)
+    public function showByName($name)
     {
         return $this->repository->findByName($name);
+    }
+
+    public function showByEmail($email)
+    {
+        return $this->repository->findByEmail($email);
     }
 
     public function delete($id)

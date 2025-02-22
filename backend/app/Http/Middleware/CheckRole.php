@@ -26,9 +26,6 @@ class CheckRole
             'STUDENT' => 1,
         ];
 
-        $userLevel = $roleHierarchy[$userRole] ?? 0;
-
-        $requiredLevel = 0;
         $requiredRoles = explode('|', $roles[0]);
 
 

@@ -4,6 +4,7 @@ namespace App\Repositories\Eloquent;
 
 use App\Models\Administrator;
 use App\Repositories\Contracts\AdministratorRepositoryInterface;
+use Exception;
 
 class AdministratorRepository implements AdministratorRepositoryInterface
 {
@@ -44,6 +45,22 @@ class AdministratorRepository implements AdministratorRepositoryInterface
         ];
     }
 
+    public function findByEmail($email)
+    {
+        $Administrator = Administrator::with(['account'])->where('email', $email)->first();
+
+        if (!$Administrator) {
+            return null;
+        }
+
+        return [
+            'id' => $Administrator->id,
+            'email' => $Administrator->email,
+            'name' => $Administrator->name,
+            'account' => $Administrator->account,
+        ];
+    }
+
     public function create(array $data)
     {
         return Administrator::create($data);
@@ -51,7 +68,7 @@ class AdministratorRepository implements AdministratorRepositoryInterface
 
     public function update($id, array $data)
     {
-        $Administrator = Administrator::findOrFail($id);
+        $Administrator = Administrator::find($id);
         $Administrator->update($data);
         return $Administrator;
     }

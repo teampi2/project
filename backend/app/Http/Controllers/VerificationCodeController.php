@@ -8,73 +8,49 @@ use App\Models\Coordinator;
 use App\Models\Monitor;
 use App\Models\Student;
 use App\Models\VerificationCode;
+use App\Services\VerificationCodeService;
+use Illuminate\Validation\ValidationException;
 use Exception;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
 class VerificationCodeController extends Controller
 {
-    public function index()
+    protected $verificationCodeService;
+
+    public function __construct(VerificationCodeService $verificationCodeService)
     {
-        //
+        $this->verificationCodeService = $verificationCodeService;
     }
 
-    public function validate(Request $request){
-        return $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255',
-        ]);
-    }
-
-    public function create($email)
-    {
-        $numbe1 = strval(str_pad(mt_rand(0, 999), 3, '0', STR_PAD_LEFT));
-        $numbe2 = strval(str_pad(mt_rand(0, 999), 3, '0', STR_PAD_LEFT));
-        $code = $numbe1 . $numbe2;
-
-        $verificationCode = VerificationCode::create([
-            'email' => $email,
-            'code' =>  $code,
-            'expires_at' => now()->addMinutes(5)
-        ]);
-
-        return $verificationCode;
-    }
-
-    public function enviarEmail($email, $code){
-        Mail::to($email)->send(new CodeMail($code));
-    }
-
-    public function buscar($email, $code){
-        return VerificationCode::where([
-            'email' => $email,
-            'code' => $code,
-        ])->first();
-    }
-
-    public function store(Request $request)
+    public function create(Request $request)
     {
         try{
-            $validated = VerificationCode::validate($request);
+            $validated = $request->validate(['email' => 'required|email']);
 
-            if(
-                Administrator::where('name', $validated['name'])->where('email', $validated['email'])->exists() ||
-                Coordinator::where('name', $validated['name'])->where('email', $validated['email'])->exists() ||
-                Monitor::where('name', $validated['name'])->where('email', $validated['email'])->exists() ||
-                Student::where('name', $validated['name'])->where('email', $validated['email'])->exists()
-            ){
-                $code = VerificationCode::create($validated['email']);
+            $code = $this->verificationCodeService->create($validated['email']);
 
-                VerificationCode::enviarEmail($validated['email'], $code);
-
-                return response()->json([
-                    'status' => "E-mail enviado com sucesso"
-                ], 200);
-            }
+            return response()->json([
+                'status' => 'OK',
+                'message' => 'Código Enviado'
+            ]);
+        }
+        catch (ValidationException $e) {
+            return response()->json([
+                'message' => 'Data Invalid',
+                'errors' => $e->errors(),
+            ], 422);
+        }
+        catch (QueryException $e) {
+            return response()->json([
+                'message' => 'Database error.',
+                'error' => $e->getMessage(),
+            ], 500);
         }
         catch(Exception $e){
             return response()->json([
-                'error' => "$e"
+                'error' => $e
             ], 400);
         }
     }

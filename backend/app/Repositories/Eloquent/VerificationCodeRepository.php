@@ -21,7 +21,7 @@ class VerificationCodeRepository implements VerificationCodeRepositoryInterface
         return VerificationCode::where([
             'email' => $email,
             'code' => $code
-        ])->get();
+        ])->first();        
     }
 
     public function delete($id)

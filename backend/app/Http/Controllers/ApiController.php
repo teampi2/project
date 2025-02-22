@@ -3,11 +3,28 @@
 namespace App\Http\Controllers;
 
 use App\Models\Account;
+use App\Services\AccountService;
+use App\Services\AdministratorService;
+use App\Services\VerificationCodeService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 class ApiController extends Controller
 {   
+    protected $accountService;
+    protected $administratorService;
+    protected $verificationCodeService;
+
+    public function __construct(
+        AccountService $accountService, 
+        AdministratorService $administratorService,
+        VerificationCodeService $verificationCodeService
+    ){
+        $this->accountService = $accountService;
+        $this->administratorService = $administratorService;
+        $this->verificationCodeService = $verificationCodeService;
+    }
+
     public function login(Request $request)
     {
         $validated = $request->validate([

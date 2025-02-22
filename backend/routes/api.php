@@ -1,21 +1,23 @@
 <?php
 
+use App\Http\Controllers\AdministratorController;
 use App\Http\Controllers\ApiController;
 use App\Http\Controllers\VerificationCodeController;
 use Illuminate\Support\Facades\Route;
 
-
-Route::post('/generate_code', [VerificationCodeController::class, 'store']);
+//Rota Feita
+Route::post('/generate_code', [VerificationCodeController::class, 'create']);
 
 Route::post('/login', [ApiController::class, 'login']);//realiza login e cria token
 Route::post('/logout', [ApiController::class, 'logout'])->middleware('role:ADMINISTRATOR|COORDENATOR|MONITOR|STUDENT');
 
+//Rotas Feitas
 Route::prefix('admin')->middleware(['auth:sanctum','role:ADMINISTRATOR'])->group(function () {
-    Route::post('/register', [ApiController::class, 'registerAdmin']);//registrar email de admin
-    Route::put('/update', [ApiController::class, 'updateAdmin']);//atualizar email de admin
-    Route::get('/show', [ApiController::class, 'showAdmin']);
-    Route::get('/all_show', [ApiController::class, 'allShowAdmin']);
-    Route::delete('/delete', [ApiController::class, 'deleteAdmin']);//deletar email de admin
+    Route::post('/register', [AdministratorController::class, 'create']);
+    Route::put('/update', [AdministratorController::class, 'update']);
+    Route::get('/show', [AdministratorController::class, 'show']);
+    Route::get('/all_show', [AdministratorController::class, 'all']);
+    Route::delete('/delete', [AdministratorController::class, 'destroy']);
 });
 
 Route::prefix('coordenator')->middleware('role:ADMINISTRATOR')->group(function () {
@@ -43,7 +45,7 @@ Route::prefix('student')->middleware('role:ADMINISTRATOR|COORDENATOR|MONITOR')->
 });
 
 Route::prefix('account')->group(function () {
-    Route::post('/register', [ApiController::class, 'registerAccount']);//
+    Route::post('/register', [ApiController::class, 'registerAccount']);
     Route::put('/update', [ApiController::class, 'updateAccount'])->middleware('role:ADMINISTRATOR|COORDENATOR|MONITOR|STUDENT');//
     Route::get('/show', [ApiController::class, 'showAccount'])->middleware(['auth:sanctum','role:ADMINISTRATOR|COORDENATOR|MONITOR|STUDENT']);
     Route::get('/all_show', [ApiController::class, 'allShowAccount'])->middleware('role:ADMINISTRATOR|COORDENATOR|MONITOR|STUDENT');

@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use App\Repositories\Contracts\AdministratorRepositoryInterface;
+use App\Repositories\Contracts\VerificationCodeRepositoryInterface;
+use App\Repositories\Eloquent\AdministratorRepository;
+use App\Repositories\Eloquent\VerificationCodeRepository;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 
@@ -12,7 +16,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        
+        $this->app->bind(AdministratorRepositoryInterface::class, AdministratorRepository::class);
+        $this->app->bind(VerificationCodeRepositoryInterface::class, VerificationCodeRepository::class);
     }
 
     /**
