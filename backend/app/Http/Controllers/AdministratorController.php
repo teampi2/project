@@ -132,7 +132,7 @@ class AdministratorController extends Controller
                 return response()->json([
                     'status' => "OK",
                     'error' => 'Código Invalido.'
-                ], 200);
+                ], 400);
             }
 
             $arrayData = collect($validated)->except('id')->toArray();

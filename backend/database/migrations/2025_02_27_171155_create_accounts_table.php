@@ -11,15 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('student_activities', function (Blueprint $table) {
+        Schema::create('accounts', function (Blueprint $table) {
             $table->integer('id', true);
-            $table->decimal('score', 4)->default(0);
-            $table->text('submission_url')->nullable();
-            $table->dateTime('submission_date')->nullable();
+            $table->string('email', 256)->unique('email_accounts_unique');
+            $table->string('password', 100);
+            $table->binary('image')->nullable();
+            $table->enum('status', ['ACTIVE', 'INACTIVE'])->default('ACTIVE');
+            $table->enum('role', ['ADMINISTRATOR', 'COORDINATOR', 'MONITOR', 'STUDENT']);
             $table->dateTime('created_at')->useCurrent();
             $table->dateTime('updated_at')->useCurrentOnUpdate()->useCurrent();
-            $table->integer('student_id')->index('fk_student_activities_student_idx');
-            $table->integer('activity_id')->index('fk_student_activities_activity_idx');
+            $table->integer('role_id');
         });
     }
 
@@ -28,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('student_activities');
+        Schema::dropIfExists('accounts');
     }
 };

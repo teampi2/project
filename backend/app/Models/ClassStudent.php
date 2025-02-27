@@ -39,7 +39,7 @@ class ClassStudent extends Model
 
 	public function class()
 	{
-		return $this->belongsTo(Class::class);
+		return $this->belongsTo(Classes::class);
 	}
 
 	public function student()

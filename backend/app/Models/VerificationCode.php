@@ -24,10 +24,8 @@ use Illuminate\Database\Eloquent\Model;
 class VerificationCode extends Model
 {
 	protected $table = 'verification_codes';
-	public $incrementing = false;
 
 	protected $casts = [
-		'id' => 'int',
 		'expires_at' => 'datetime'
 	];
 

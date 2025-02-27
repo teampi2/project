@@ -8,9 +8,7 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class Account
@@ -18,7 +16,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @property int $id
  * @property string $email
  * @property string $password
- * @property string|null $image_url
+ * @property string|null $image
  * @property string $status
  * @property string $role
  * @property Carbon $created_at
@@ -41,10 +39,8 @@ use Laravel\Sanctum\HasApiTokens;
  *
  * @package App\Models
  */
-class Account extends Authenticatable
+class Account extends Model
 {
-	use HasApiTokens, HasFactory;
-	
 	protected $table = 'accounts';
 
 	protected $casts = [
@@ -58,7 +54,7 @@ class Account extends Authenticatable
 	protected $fillable = [
 		'email',
 		'password',
-		'image_url',
+		'image',
 		'status',
 		'role',
 		'role_id'
@@ -74,6 +70,11 @@ class Account extends Authenticatable
 		return $this->hasMany(ActivityComment::class);
 	}
 
+	public function administrator()
+	{
+		return $this->hasOne(Administrator::class);
+	}
+
 	public function announcements()
 	{
 		return $this->hasMany(Announcement::class);
@@ -86,7 +87,12 @@ class Account extends Authenticatable
 
 	public function classes()
 	{
-		return $this->hasMany(Classes::class);
+		return $this->hasMany(Class::class);
+	}
+
+	public function coordinator()
+	{
+		return $this->hasOne(Coordinator::class);
 	}
 
 	public function lesson_comments()
@@ -104,35 +110,18 @@ class Account extends Authenticatable
 		return $this->hasMany(Lesson::class);
 	}
 
-	public function schools()
-	{
-		return $this->hasMany(School::class);
-	}
-
-	public function administrator()
-	{
-		return $this->hasOne(Administrator::class);
-	}
-
-	public function coordinator()
-	{
-		return $this->hasOne(Coordinator::class);
-	}
-
 	public function monitor()
 	{
 		return $this->hasOne(Monitor::class);
+	}
+
+	public function schools()
+	{
+		return $this->hasMany(School::class);
 	}
 
 	public function student()
 	{
 		return $this->hasOne(Student::class);
 	}
-
-	protected function casts(): array
-    {
-        return [
-            'password' => 'hashed',
-        ];
-    }
 }

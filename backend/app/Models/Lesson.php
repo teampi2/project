@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $id
  * @property string $title
  * @property string $description
+ * @property string|null $file
  * @property Carbon $date
  * @property Carbon $created_at
  * @property Carbon $updated_at
@@ -45,6 +46,7 @@ class Lesson extends Model
 	protected $fillable = [
 		'title',
 		'description',
+		'file',
 		'date',
 		'account_id',
 		'lesson_plan_id',

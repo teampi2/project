@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $description
  * @property string $objectives
  * @property string|null $materials
+ * @property string|null $file
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property int $account_id
@@ -39,6 +40,7 @@ class LessonPlan extends Model
 		'description',
 		'objectives',
 		'materials',
+		'file',
 		'account_id'
 	];
 

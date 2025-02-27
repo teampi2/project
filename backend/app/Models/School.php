@@ -25,7 +25,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $account_id
  * 
  * @property Account $account
- * @property Collection|Class[] $classes
+ * @property Collection|Classes[] $classes
  * @property Collection|Student[] $students
  *
  * @package App\Models
@@ -55,7 +55,7 @@ class School extends Model
 
 	public function classes()
 	{
-		return $this->hasMany(classes::class);
+		return $this->hasMany(Classes::class);
 	}
 
 	public function students()

@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $id
  * @property string $title
  * @property string $description
+ * @property string|null $file
  * @property float $max_score
  * @property Carbon $due_date
  * @property Carbon $created_at
@@ -44,6 +45,7 @@ class Activity extends Model
 	protected $fillable = [
 		'title',
 		'description',
+		'file',
 		'max_score',
 		'due_date',
 		'account_id',
@@ -57,7 +59,7 @@ class Activity extends Model
 
 	public function class()
 	{
-		return $this->belongsTo(Classes::class);
+		return $this->belongsTo(Class::class);
 	}
 
 	public function activity_comments()

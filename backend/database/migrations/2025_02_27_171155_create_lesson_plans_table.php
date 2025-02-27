@@ -11,18 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('lessons', function (Blueprint $table) {
+        Schema::create('lesson_plans', function (Blueprint $table) {
             $table->integer('id', true);
             $table->string('title', 100);
             $table->text('description');
-            $table->dateTime('date');
+            $table->text('objectives');
+            $table->text('materials')->nullable();
+            $table->binary('file')->nullable();
             $table->dateTime('created_at')->useCurrent();
             $table->dateTime('updated_at')->useCurrentOnUpdate()->useCurrent();
-            $table->integer('account_id')->index('fk_lessons_account_idx');
-            $table->integer('lesson_plan_id')->index('fk_lessons_lesson_plan_idx');
-            $table->integer('class_id')->index('fk_lessons_class_idx');
-
-            $table->unique(['lesson_plan_id'], 'lesson_plan_id_lessons_unique');
+            $table->integer('account_id')->index('fk_lesson_plans_account_idx');
         });
     }
 
@@ -31,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('lessons');
+        Schema::dropIfExists('lesson_plans');
     }
 };
