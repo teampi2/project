@@ -15,7 +15,7 @@ class CheckRole
             return response()->json("Usuário não Autenticado.", 403);
         }
 
-        $user = Auth::user();
+        $user = Auth::account();
 
         $userRole = $user->role;
 

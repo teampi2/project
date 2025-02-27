@@ -2,50 +2,37 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\AccountService;
+use App\Services\CoordinatorService;
 use App\Services\VerificationCodeService;
+use Illuminate\Validation\ValidationException;
 use Exception;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
-use Illuminate\Validation\ValidationException;
 
-class AccountController extends Controller
+class CoordinatorController extends Controller
 {
-    protected $accountService, $verificationCodeService;
-
-    public function __construct(AccountService $accountService, VerificationCodeService $verificationCodeService)
+    protected $coordinatorService, $verificationCodeService;
+    
+    public function __construct(CoordinatorService $coordinatorService, VerificationCodeService $verificationCodeService)
     {
-        $this->accountService = $accountService;
+        $this->coordinatorService = $coordinatorService;
         $this->verificationCodeService = $verificationCodeService;
     }
 
     public function create(Request $request)
     {
-        try {
+        try{
             $validated = $request->validate([
-                'email' => 'required|string|email|max:255',
-                'password' => 'required|string|max:255|min:8|regex:/[A-Z]/|regex:/[0-9]/|regex:/[@$!%*?&.#]/',
-                'file' => 'file|mimes:jpeg,png,pdf|max:5120', ,
-                'status' => 'in:ACTIVE,INACTIVE',
-                'role' => 'required|in:ADMINISTRATOR,COORDINATOR,MONITOR,STUDENT',
-                'code' => 'required|string|size:6',
+                'name' => 'required|string|max:2000',
+                'email' => 'required|email'
             ]);
-
-            $code = $this->verificationCodeService->verify($validated['email'], $validated['code']);
-
-            if(!$code){
-                return response()->json([
-                    'status' => "OK",
-                    'error' => 'Código Invalido.'
-                ], 400);
-            }
-
-            $account = $this->accountService->create($validated);
-
+            
+            $coordinator = $this->coordinatorService->create($validated);
+    
             return response()->json([
                 'status' => "OK",
-                'account' => $account
-            ]);
+                'coordinator' => $coordinator
+            ], 200);
         }
         catch (ValidationException $e) {
             return response()->json([
@@ -64,16 +51,17 @@ class AccountController extends Controller
                 'error' => $e
             ], 400);
         }
+        
     }
 
     public function all(Request $request)
     {
         try {
-            $accounts = $this->accountService->all();
+            $coordinators = $this->coordinatorService->all();
 
             return response()->json([
                 'status' => 'OK',
-                'admins' => $accounts
+                'coordinators' => $coordinators
             ], 200);
         }
         catch (ValidationException $e) {
@@ -102,11 +90,11 @@ class AccountController extends Controller
                 'id' => 'required|int'
             ]);
 
-            $account = $this->accountService->show($validated['id']);
+            $coordinator = $this->coordinatorService->show($validated['id']);
 
             return response()->json([
                 'status' => "OK",
-                'account' => $account
+                'coordinator' => $coordinator
             ], 200);
         }
         catch (ValidationException $e) {
@@ -133,12 +121,9 @@ class AccountController extends Controller
         try{
             $validated = $request->validate([
                 'id' => 'required|int',
-                'email' => 'required|string|email|max:255',
-                'password' => 'string|max:255|min:8|regex:/[A-Z]/|regex:/[0-9]/|regex:/[@$!%*?&.#]/',
-                'file' => 'file|mimes:jpeg,png,pdf|max:5120', ,
-                'status' => 'in:ACTIVE,INACTIVE',
-                'role' => 'in:ADMINISTRATOR,COORDINATOR,MONITOR,STUDENT',
-                'code' => 'required|string|size:6',
+                'name' => 'string|max:2000',
+                'email' => 'required|email',
+                'code' => 'required|string|min:6|max:6'
             ]);
 
             $code = $this->verificationCodeService->verify($validated['email'], $validated['code']);
@@ -152,28 +137,28 @@ class AccountController extends Controller
 
             $arrayData = collect($validated)->except('id')->toArray();
 
-            $account = $this->accountService->update($validated['id'], $arrayData);
+            $coordinator = $this->coordinatorService->update($validated['id'], $arrayData);
 
             return response()->json([
                 'status' => "OK",
-                'account' => $account
+                'coordinator' => $coordinator
             ], 200);
-
-        }catch (ValidationException $e) {
+        }
+        catch (ValidationException $e) {
             return response()->json([
                 'message' => 'Data Invalid',
-                'errors' => $e->errors(),
+                'errorsV' => $e->errors(),
             ], 422);
         }
         catch (QueryException $e) {
             return response()->json([
                 'message' => 'Database error.',
-                'error' => $e->getMessage(),
+                'errorQ' => $e,
             ], 500);
         }
         catch(Exception $e){
             return response()->json([
-                'error' => $e
+                'errorG' => $e->getMessage()
             ], 400);
         }
     }
@@ -182,8 +167,7 @@ class AccountController extends Controller
     {
         try{
             $validated = $request->validate([
-                'id' => 'required|int',
-                'code' => 'required|string|size:6',
+                'id' => 'require|int'
             ]);
 
             $code = $this->verificationCodeService->verify($validated['email'], $validated['code']);
@@ -192,19 +176,17 @@ class AccountController extends Controller
                 return response()->json([
                     'status' => "OK",
                     'error' => 'Código Invalido.'
-                ], 400);
+                ], 200);
             }
 
-            $arrayData = [ 'status' => 'INACTIVE'];
-
-            $account = $this->accountService->update($validated['id'], $arrayData);
+            $this->coordinatorService->delete($validated['id']);
 
             return response()->json([
-                'status' => "OK",
-                'account' => $account
+                'status' => 'OK',
+                'message' => 'Coordinator apagado com sucesso'
             ], 200);
-
-        }catch (ValidationException $e) {
+        }
+        catch (ValidationException $e) {
             return response()->json([
                 'message' => 'Data Invalid',
                 'errors' => $e->errors(),

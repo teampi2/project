@@ -1,7 +1,11 @@
 <?php
 
+use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AdministratorController;
 use App\Http\Controllers\ApiController;
+use App\Http\Controllers\CoordinatorController;
+use App\Http\Controllers\MonitorController;
+use App\Http\Controllers\StudentController;
 use App\Http\Controllers\VerificationCodeController;
 use Illuminate\Support\Facades\Route;
 
@@ -9,48 +13,49 @@ use Illuminate\Support\Facades\Route;
 Route::post('/generate_code', [VerificationCodeController::class, 'create']);
 
 Route::post('/login', [ApiController::class, 'login']);//realiza login e cria token
-Route::post('/logout', [ApiController::class, 'logout'])->middleware('role:ADMINISTRATOR|COORDENATOR|MONITOR|STUDENT');
+Route::post('/logout', [ApiController::class, 'logout'])->middleware(['auth:sanctum','role:ADMINISTRATOR|COORDENATOR|MONITOR|STUDENT']);
 
-//Rotas Feitas
+
 Route::prefix('admin')->middleware(['auth:sanctum','role:ADMINISTRATOR'])->group(function () {
     Route::post('/register', [AdministratorController::class, 'create']);
     Route::put('/update', [AdministratorController::class, 'update']);
     Route::get('/show', [AdministratorController::class, 'show']);
     Route::get('/all_show', [AdministratorController::class, 'all']);
     Route::delete('/delete', [AdministratorController::class, 'destroy']);
-});
+});//Rotas Feitas
 
-Route::prefix('coordenator')->middleware('role:ADMINISTRATOR')->group(function () {
-    Route::post('/register', [ApiController::class, 'registerCoordenator']);//registrar email de coordenador
-    Route::put('/update', [ApiController::class, 'updateCoordenator']);//atualizar email de coordenador
-    Route::get('/show', [ApiController::class, 'showCoordenator']);
-    Route::get('/all_show', [ApiController::class, 'allShowCoordenator']);
-    Route::delete('/delete', [ApiController::class, 'deleteCoordenator']);//deletar email de coordenador
-});
+Route::prefix('coordinator')->middleware(['auth:sanctum','role:ADMINISTRATOR|COORDENATOR'])->group(function () {
+    Route::post('/register', [CoordinatorController::class, 'create']);//registrar email de coordenador
+    Route::put('/update', [CoordinatorController::class, 'update']);//atualizar email de coordenador
+    Route::get('/show', [CoordinatorController::class, 'show']);
+    Route::get('/all_show', [CoordinatorController::class, 'all']);
+    Route::delete('/delete', [CoordinatorController::class, 'destroy']);//deletar email de coordenador
+});//Rotas Feitas
 
-Route::prefix('monitor')->middleware('role:ADMINISTRATOR|COORDENATOR')->group(function () {
-    Route::post('/register', [ApiController::class, 'registerMonitor']);//registrar email de monitor
-    Route::put('/update', [ApiController::class, 'updateMonitor']);//atualizar email de monitor
-    Route::get('/show', [ApiController::class, 'showMonitor']);
-    Route::get('/all_show', [ApiController::class, 'allShowMonitor']);
-    Route::delete('/delete', [ApiController::class, 'deleteMonitor']);//deletar email de monitor
-});
+Route::prefix('monitor')->middleware(['auth:sanctum','role:ADMINISTRATOR|COORDENATOR|MONITOR'])->group(function () {
+    Route::post('/register', [MonitorController::class, 'create']);//registrar email de monitor
+    Route::put('/update', [MonitorController::class, 'update']);//atualizar email de monitor
+    Route::get('/show', [MonitorController::class, 'show']);
+    Route::get('/all_show', [MonitorController::class, 'all']);
+    Route::delete('/delete', [MonitorController::class, 'destroy']);//deletar email de monitor
+});//Rotas Feitas
 
-Route::prefix('student')->middleware('role:ADMINISTRATOR|COORDENATOR|MONITOR')->group(function () {
-    Route::post('/register', [ApiController::class, 'registerStudent']);//registrar email de student
-    Route::put('/update', [ApiController::class, 'updateStudent']);//atualizar email de student
-    Route::get('/show', [ApiController::class, 'showStudent']);
-    Route::get('/all_show', [ApiController::class, 'allShowStudent']);
-    Route::delete('/delete', [ApiController::class, 'deleteStudent']);//deletar email de student
-});
+Route::prefix('student')->middleware(['auth:sanctum','role:ADMINISTRATOR|COORDENATOR|MONITOR|STUDENT'])->group(function () {
+    Route::post('/register', [StudentController::class, 'create']);//registrar email de student
+    Route::put('/update', [StudentController::class, 'update']);
+    Route::put('/update_name', [StudentController::class, 'update_name'])->middleware(['auth:sanctum','role:ADMINISTRATOR|COORDENATOR|MONITOR']);
+    Route::get('/show', [StudentController::class, 'show']);
+    Route::get('/all_show', [StudentController::class, 'all']);
+    Route::delete('/delete', [StudentController::class, 'destroy']);//deletar email de student
+});//Rotas Feitas
 
 Route::prefix('account')->group(function () {
-    Route::post('/register', [ApiController::class, 'registerAccount']);
-    Route::put('/update', [ApiController::class, 'updateAccount'])->middleware('role:ADMINISTRATOR|COORDENATOR|MONITOR|STUDENT');//
-    Route::get('/show', [ApiController::class, 'showAccount'])->middleware(['auth:sanctum','role:ADMINISTRATOR|COORDENATOR|MONITOR|STUDENT']);
-    Route::get('/all_show', [ApiController::class, 'allShowAccount'])->middleware('role:ADMINISTRATOR|COORDENATOR|MONITOR|STUDENT');
-    Route::delete('/delete', [ApiController::class, 'deleteAccount'])->middleware('role:ADMINISTRATOR|COORDENATOR|MONITOR|STUDENT');//
-});
+    Route::post('/register', [AccountController::class, 'create']);
+    Route::put('/update', [AccountController::class, 'update'])->middleware(['auth:sanctum','role:ADMINISTRATOR|COORDENATOR|MONITOR|STUDENT']);//
+    Route::get('/show', [AccountController::class, 'show'])->middleware(['auth:sanctum','role:ADMINISTRATOR|COORDENATOR|MONITOR|STUDENT']);
+    Route::get('/all_show', [AccountController::class, 'all'])->middleware('role:ADMINISTRATOR|COORDENATOR|MONITOR|STUDENT');
+    Route::delete('/delete', [AccountController::class, 'destroy'])->middleware('role:ADMINISTRATOR|COORDENATOR|MONITOR|STUDENT');//
+});//Rotas Feitas
 
 Route::prefix('school')->middleware('role:ADMINISTRATOR|COORDENATOR')->group(function () {
     Route::post('/register', [ApiController::class, 'registerSchool']);

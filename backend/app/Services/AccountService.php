@@ -31,6 +31,11 @@ class AccountService
         return $this->repository->update($id, $data);
     }
 
+    public function all()
+    {
+        return $this->repository->all();
+    }
+
     public function show($id)
     {
         return $this->repository->find($id);

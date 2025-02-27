@@ -7,6 +7,7 @@ use App\Services\AccountService;
 use App\Services\AdministratorService;
 use App\Services\VerificationCodeService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class ApiController extends Controller
@@ -52,6 +53,18 @@ class ApiController extends Controller
 
     public function logout(Request $request)
     {
+        $user = Auth::account();
+
+        if ($user) {
+            $user->tokens()->delete(); // Revoga todos os tokens se estiver usando Sanctum
+        }
+
+        Auth::guard('web')->logout(); // Faz logout do usuário
+
+        $request->session()->invalidate(); // Invalida a sessão
+        $request->session()->regenerateToken(); // Regenera o token CSRF
+
+        return response()->json(['message' => 'Logout realizado com sucesso.']);
     }
 
     public function registerAccount(Request $request){
