@@ -3,8 +3,16 @@
 namespace App\Providers;
 
 use App\Repositories\Contracts\AdministratorRepositoryInterface;
-use App\Repositories\Contracts\VerificationCodeRepositoryInterface;
 use App\Repositories\Eloquent\AdministratorRepository;
+use App\Repositories\Contracts\MonitorRepositoryInterface;
+use App\Repositories\Eloquent\MonitorRepository;
+use App\Repositories\Contracts\CoordinatorRepositoryInterface;
+use App\Repositories\Eloquent\CoordinatorRepository;
+use App\Repositories\Contracts\StudentRepositoryInterface;
+use App\Repositories\Eloquent\StudentRepository;
+use App\Repositories\Contracts\AccountRepositoryInterface;
+use App\Repositories\Eloquent\AccountRepository;
+use App\Repositories\Contracts\VerificationCodeRepositoryInterface;
 use App\Repositories\Eloquent\VerificationCodeRepository;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Gate;
@@ -17,6 +25,10 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->bind(AdministratorRepositoryInterface::class, AdministratorRepository::class);
+        $this->app->bind(MonitorRepositoryInterface::class, MonitorRepository::class);
+        $this->app->bind(AccountRepositoryInterface::class, AccountRepository::class);
+        $this->app->bind(StudentRepositoryInterface::class, StudentRepository::class);
+        $this->app->bind(CoordinatorRepositoryInterface::class, CoordinatorRepository::class);
         $this->app->bind(VerificationCodeRepositoryInterface::class, VerificationCodeRepository::class);
     }
 
