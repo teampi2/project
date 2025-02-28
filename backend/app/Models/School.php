@@ -44,7 +44,7 @@ class School extends Model
 		'address',
 		'email',
 		'phone',
-		'image_url',
+		'file',
 		'account_id'
 	];
 

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('address');
             $table->string('email', 256);
             $table->string('phone', 25)->nullable();
-            $table->text('image_url')->nullable();
+            $table->binary('file')->nullable();
             $table->dateTime('created_at')->useCurrent();
             $table->dateTime('updated_at')->useCurrentOnUpdate()->useCurrent();
             $table->integer('account_id')->index('fk_schools_account_idx');
