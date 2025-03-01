@@ -5,5 +5,5 @@ export default function stringToColor(str: string): string {
 
   const hue = Math.floor(Math.abs(Math.sin(hash) * 10000) % 360)
 
-  return `hsl(${hue}, 70%, 85%)`
+  return `hsl(${hue}, 70%, 50%)`
 }

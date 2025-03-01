@@ -39,22 +39,22 @@ export function ClassesListItem({ cls }: ClassesListItem) {
 
   return (
     <Card
-      to="#"
       title={cls.name}
       subtitle="Nome do Coodenador(a)"
+      to={'/classes/' + cls.id}
       action={
         <>
-          <IconButton onClick={handleClick}>
+          <IconButton sx={{ color: 'white' }} onClick={handleClick}>
             <MoreVertIcon />
           </IconButton>
           <StyledMenu open={open} anchorEl={anchorEl} onClose={handleClose}>
             <MenuItem onClick={handleUpdate} disableRipple>
               <EditIcon />
-              Edit
+              Editar
             </MenuItem>
             <MenuItem onClick={handleDelete} disableRipple>
               <DeleteIcon />
-              Delete
+              Excluir
             </MenuItem>
           </StyledMenu>
         </>

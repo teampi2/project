@@ -10,7 +10,9 @@ export function Home() {
         height: '100vh',
       }}
     >
-      <Button variant="contained">Home</Button>
+      <Button variant="contained" href="/dashboard">
+        Dashboard
+      </Button>
     </Container>
   )
 }

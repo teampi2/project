@@ -1,10 +1,10 @@
 import PageLayout from '@/layouts/PageLayout'
-import ActivitiesList from '@/templates/Activity/ActivitiesList'
+import ActivitiesTabs from '@/templates/Activity/ActivitiesTabs'
 
 export function Activities() {
   return (
     <PageLayout>
-      <ActivitiesList />
+      <ActivitiesTabs />
     </PageLayout>
   )
 }

@@ -11,7 +11,7 @@ interface ClassesContextProps {
   handleCreateClass: (cls: ICreateClassData) => void
   handleUpdateClass: (id: number, updatedData: IUpdateClassData) => void
   handleDeleteClass: (id: number) => void
-  handleFindClass: (id: number) => IClass | null
+  handleFindClass: (id: number) => IClass
 }
 
 export const ClassesContext = React.createContext({} as ClassesContextProps)
