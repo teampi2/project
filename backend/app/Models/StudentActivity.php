@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Model;
  * 
  * @property int $id
  * @property float $score
- * @property string|null $submission_url
+ * @property string|null $file
  * @property Carbon|null $submission_date
  * @property Carbon $created_at
  * @property Carbon $updated_at
@@ -39,7 +39,7 @@ class StudentActivity extends Model
 
 	protected $fillable = [
 		'score',
-		'submission_url',
+		'file',
 		'submission_date',
 		'student_id',
 		'activity_id'

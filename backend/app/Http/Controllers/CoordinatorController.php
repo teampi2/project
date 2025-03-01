@@ -2,20 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\AdministratorService;
+use App\Services\CoordinatorService;
 use App\Services\VerificationCodeService;
 use Illuminate\Validation\ValidationException;
 use Exception;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 
-class AdministratorController extends Controller
+class CoordinatorController extends Controller
 {
-    protected $administratorService, $verificationCodeService;
+    protected $coordinatorService, $verificationCodeService;
     
-    public function __construct(AdministratorService $administratorService, VerificationCodeService $verificationCodeService)
+    public function __construct(CoordinatorService $coordinatorService, VerificationCodeService $verificationCodeService)
     {
-        $this->administratorService = $administratorService;
+        $this->coordinatorService = $coordinatorService;
         $this->verificationCodeService = $verificationCodeService;
     }
 
@@ -27,11 +27,11 @@ class AdministratorController extends Controller
                 'email' => 'required|email'
             ]);
             
-            $admin = $this->administratorService->create($validated);
+            $coordinator = $this->coordinatorService->create($validated);
     
             return response()->json([
                 'status' => "OK",
-                'admin' => $admin
+                'coordinator' => $coordinator
             ], 200);
         }
         catch (ValidationException $e) {
@@ -57,11 +57,11 @@ class AdministratorController extends Controller
     public function all(Request $request)
     {
         try {
-            $admins = $this->administratorService->all();
+            $coordinators = $this->coordinatorService->all();
 
             return response()->json([
                 'status' => 'OK',
-                'admins' => $admins
+                'coordinators' => $coordinators
             ], 200);
         }
         catch (ValidationException $e) {
@@ -90,11 +90,11 @@ class AdministratorController extends Controller
                 'id' => 'required|int'
             ]);
 
-            $admin = $this->administratorService->show($validated['id']);
+            $coordinator = $this->coordinatorService->show($validated['id']);
 
             return response()->json([
                 'status' => "OK",
-                'admin' => $admin
+                'coordinator' => $coordinator
             ], 200);
         }
         catch (ValidationException $e) {
@@ -137,11 +137,11 @@ class AdministratorController extends Controller
 
             $arrayData = collect($validated)->except('id')->toArray();
 
-            $admin = $this->administratorService->update($validated['id'], $arrayData);
+            $coordinator = $this->coordinatorService->update($validated['id'], $arrayData);
 
             return response()->json([
                 'status' => "OK",
-                'admin' => $admin
+                'coordinator' => $coordinator
             ], 200);
         }
         catch (ValidationException $e) {
@@ -179,11 +179,11 @@ class AdministratorController extends Controller
                 ], 200);
             }
 
-            $this->administratorService->delete($validated['id']);
+            $this->coordinatorService->delete($validated['id']);
 
             return response()->json([
                 'status' => 'OK',
-                'message' => 'Administrator apagado com sucesso'
+                'message' => 'Coordinator apagado com sucesso'
             ], 200);
         }
         catch (ValidationException $e) {

@@ -8,8 +8,7 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Model;
 use Laravel\Sanctum\HasApiTokens;
 
 /**
@@ -18,7 +17,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @property int $id
  * @property string $email
  * @property string $password
- * @property string|null $image_url
+ * @property string|null $image
  * @property string $status
  * @property string $role
  * @property Carbon $created_at
@@ -41,10 +40,10 @@ use Laravel\Sanctum\HasApiTokens;
  *
  * @package App\Models
  */
-class Account extends Authenticatable
+class Account extends Model
 {
-	use HasApiTokens, HasFactory;
-	
+	use HasApiTokens;
+
 	protected $table = 'accounts';
 
 	protected $casts = [
@@ -58,7 +57,7 @@ class Account extends Authenticatable
 	protected $fillable = [
 		'email',
 		'password',
-		'image_url',
+		'image',
 		'status',
 		'role',
 		'role_id'
@@ -128,11 +127,4 @@ class Account extends Authenticatable
 	{
 		return $this->hasOne(Student::class);
 	}
-
-	protected function casts(): array
-    {
-        return [
-            'password' => 'hashed',
-        ];
-    }
 }

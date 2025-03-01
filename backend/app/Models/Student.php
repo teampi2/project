@@ -25,7 +25,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property Account|null $account
  * @property School $school
  * @property Collection|Attendance[] $attendances
- * @property Collection|Class[] $classes
+ * @property Collection|Classes[] $classes
  * @property Collection|StudentActivity[] $student_activities
  *
  * @package App\Models

@@ -14,7 +14,7 @@ return [
     */
 
     'defaults' => [
-        'guard' => env('AUTH_GUARD', 'web'),
+        'guard' => env('AUTH_GUARD', 'api'),
         'passwords' => env('AUTH_PASSWORD_BROKER', 'account'),
     ],
 
@@ -38,8 +38,12 @@ return [
     'guards' => [
         'web' => [
             'driver' => 'session',
-            'provider' => 'account',
+            'provider' => 'accounts',
         ],
+        'api' => [
+            'driver' => 'sanctum',
+            'provider' => 'accounts',
+        ]
     ],
 
     /*

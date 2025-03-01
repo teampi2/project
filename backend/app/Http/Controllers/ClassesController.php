@@ -2,36 +2,42 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\AdministratorService;
-use App\Services\VerificationCodeService;
+use App\Services\ClassesService;
 use Illuminate\Validation\ValidationException;
 use Exception;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
-class AdministratorController extends Controller
+class ClassesController extends Controller
 {
-    protected $administratorService, $verificationCodeService;
+    protected $classesService;
     
-    public function __construct(AdministratorService $administratorService, VerificationCodeService $verificationCodeService)
+    public function __construct(ClassesService $classesService)
     {
-        $this->administratorService = $administratorService;
-        $this->verificationCodeService = $verificationCodeService;
+        $this->classesService = $classesService;
     }
 
     public function create(Request $request)
     {
         try{
+            $user = Auth::user();
+            $id = $user['id'];
+
             $validated = $request->validate([
                 'name' => 'required|string|max:2000',
-                'email' => 'required|email'
+                'shift' => 'required|string|in:MORNING,AFTERNOON,EVENING,NIGHT',
+                'academic_year' => 'required',
+                'school_id' => 'required|int'
             ]);
+
+            $arrayData = array_merge($validated, ['account_id' => $id]);
             
-            $admin = $this->administratorService->create($validated);
+            $classes = $this->classesService->create($arrayData);
     
             return response()->json([
                 'status' => "OK",
-                'admin' => $admin
+                'classes' => $classes
             ], 200);
         }
         catch (ValidationException $e) {
@@ -57,11 +63,11 @@ class AdministratorController extends Controller
     public function all(Request $request)
     {
         try {
-            $admins = $this->administratorService->all();
+            $classess = $this->classesService->all();
 
             return response()->json([
                 'status' => 'OK',
-                'admins' => $admins
+                'classess' => $classess
             ], 200);
         }
         catch (ValidationException $e) {
@@ -90,11 +96,11 @@ class AdministratorController extends Controller
                 'id' => 'required|int'
             ]);
 
-            $admin = $this->administratorService->show($validated['id']);
+            $classes = $this->classesService->show($validated['id']);
 
             return response()->json([
                 'status' => "OK",
-                'admin' => $admin
+                'classes' => $classes
             ], 200);
         }
         catch (ValidationException $e) {
@@ -119,29 +125,25 @@ class AdministratorController extends Controller
     public function update(Request $request)
     {
         try{
+            $user = Auth::user();
+            $id = $user['id'];
+
             $validated = $request->validate([
                 'id' => 'required|int',
-                'name' => 'string|max:2000',
-                'email' => 'required|email',
-                'code' => 'required|string|min:6|max:6'
+                'name' => 'required|string|max:2000',
+                'shift' => 'required|string|in:MORNING,AFTERNOON,EVENING,NIGHT',
+                'academic_year' => 'required',
+                'school_id' => 'required|int'
             ]);
 
-            $code = $this->verificationCodeService->verify($validated['email'], $validated['code']);
+            $arrayDataFull = array_merge($validated, ['account_id' => $id]);
+            $arrayDataExcept = collect($arrayDataFull)->except('id')->toArray();
 
-            if(!$code){
-                return response()->json([
-                    'status' => "OK",
-                    'error' => 'Código Invalido.'
-                ], 400);
-            }
-
-            $arrayData = collect($validated)->except('id')->toArray();
-
-            $admin = $this->administratorService->update($validated['id'], $arrayData);
+            $classes = $this->classesService->update($validated['id'], $arrayDataExcept);
 
             return response()->json([
                 'status' => "OK",
-                'admin' => $admin
+                'classes' => $classes
             ], 200);
         }
         catch (ValidationException $e) {
@@ -170,20 +172,11 @@ class AdministratorController extends Controller
                 'id' => 'require|int'
             ]);
 
-            $code = $this->verificationCodeService->verify($validated['email'], $validated['code']);
-
-            if(!$code){
-                return response()->json([
-                    'status' => "OK",
-                    'error' => 'Código Invalido.'
-                ], 200);
-            }
-
-            $this->administratorService->delete($validated['id']);
+            $this->classesService->delete($validated['id']);
 
             return response()->json([
                 'status' => 'OK',
-                'message' => 'Administrator apagado com sucesso'
+                'message' => 'Classes apagado com sucesso'
             ], 200);
         }
         catch (ValidationException $e) {

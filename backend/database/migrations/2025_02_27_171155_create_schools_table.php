@@ -11,15 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('student_activities', function (Blueprint $table) {
+        Schema::create('schools', function (Blueprint $table) {
             $table->integer('id', true);
-            $table->decimal('score', 4)->default(0);
-            $table->text('submission_url')->nullable();
-            $table->dateTime('submission_date')->nullable();
+            $table->string('name', 100);
+            $table->string('cnpj', 18)->unique('cnpj_schools_unique');
+            $table->string('address');
+            $table->string('email', 256);
+            $table->string('phone', 25)->nullable();
+            $table->binary('file')->nullable();
             $table->dateTime('created_at')->useCurrent();
             $table->dateTime('updated_at')->useCurrentOnUpdate()->useCurrent();
-            $table->integer('student_id')->index('fk_student_activities_student_idx');
-            $table->integer('activity_id')->index('fk_student_activities_activity_idx');
+            $table->integer('account_id')->index('fk_schools_account_idx');
         });
     }
 
@@ -28,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('student_activities');
+        Schema::dropIfExists('schools');
     }
 };

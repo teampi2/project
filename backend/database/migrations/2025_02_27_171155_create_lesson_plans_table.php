@@ -11,13 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('verification_codes', function (Blueprint $table) {
-            $table->integer('id')->primary();
-            $table->string('email', 256);
-            $table->char('code', 6)->index('verification_codes_code_idx');
-            $table->dateTime('expires_at');
+        Schema::create('lesson_plans', function (Blueprint $table) {
+            $table->integer('id', true);
+            $table->string('title', 100);
+            $table->text('description');
+            $table->text('objectives');
+            $table->text('materials')->nullable();
+            $table->binary('file')->nullable();
             $table->dateTime('created_at')->useCurrent();
             $table->dateTime('updated_at')->useCurrentOnUpdate()->useCurrent();
+            $table->integer('account_id')->index('fk_lesson_plans_account_idx');
         });
     }
 
@@ -26,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('verification_codes');
+        Schema::dropIfExists('lesson_plans');
     }
 };

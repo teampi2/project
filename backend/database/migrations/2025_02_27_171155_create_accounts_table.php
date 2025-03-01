@@ -11,15 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('lesson_plans', function (Blueprint $table) {
+        Schema::create('accounts', function (Blueprint $table) {
             $table->integer('id', true);
-            $table->string('title', 100);
-            $table->text('description');
-            $table->text('objectives');
-            $table->text('materials')->nullable();
+            $table->string('email', 256)->unique('email_accounts_unique');
+            $table->string('password', 100);
+            $table->binary('image')->nullable();
+            $table->enum('status', ['ACTIVE', 'INACTIVE'])->default('ACTIVE');
+            $table->enum('role', ['ADMINISTRATOR', 'COORDINATOR', 'MONITOR', 'STUDENT']);
             $table->dateTime('created_at')->useCurrent();
             $table->dateTime('updated_at')->useCurrentOnUpdate()->useCurrent();
-            $table->integer('account_id')->index('fk_lesson_plans_account_idx');
+            $table->integer('role_id');
         });
     }
 
@@ -28,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('lesson_plans');
+        Schema::dropIfExists('accounts');
     }
 };
