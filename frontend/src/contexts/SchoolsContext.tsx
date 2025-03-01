@@ -11,7 +11,7 @@ interface SchoolsContextProps {
   handleCreateSchool: (school: ICreateSchoolData) => void
   handleUpdateSchool: (id: number, updatedData: IUpdateSchoolData) => void
   handleDeleteSchool: (id: number) => void
-  handleFindSchool: (id: number) => ISchool | null
+  handleFindSchool: (id: number) => ISchool
 }
 
 export const SchoolsContext = React.createContext({} as SchoolsContextProps)

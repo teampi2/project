@@ -2,6 +2,7 @@ import Dashboard from '@/pages/Dasboard'
 import Classes from '@/pages/Classes'
 import Activities from '@/pages/Activities'
 import Settings from '@/pages/Settings'
+import Stream from '@/pages/Stream'
 
 const routes: IRoute[] = [
   {
@@ -19,6 +20,10 @@ const routes: IRoute[] = [
   {
     path: '/settings',
     element: <Settings />,
+  },
+  {
+    path: '/classes/:id',
+    element: <Stream />,
   },
 ]
 

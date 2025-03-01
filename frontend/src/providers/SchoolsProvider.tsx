@@ -6,11 +6,11 @@ interface SchoolsProviderProps {
 }
 
 const initialValue: ISchool[] = [...Array(8)].map((_, index) => ({
-  id: index,
-  name: 'Escola ' + ++index,
+  id: ++index,
+  name: 'Escola ' + index,
   cnpj: '00.000 000 0000-00',
   address: 'Rua 123, 123',
-  email: 'escola' + ++index + '@example.com',
+  email: 'escola' + index + '@example.com',
   phone: '1234-5678',
   createdAt: new Date(),
   updatedAt: new Date(),
@@ -60,7 +60,9 @@ export default function SchoolsProvider({ children }: SchoolsProviderProps) {
   }
 
   const handleFindSchool = (id: number) => {
-    return schools.find((school) => school.id === id) || null
+    const school = schools.find((school) => school.id === id) || null
+    if (school == null) throw new Error('School not found.')
+    return school
   }
 
   return (

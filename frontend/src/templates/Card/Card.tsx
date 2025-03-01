@@ -1,11 +1,13 @@
 import * as React from 'react'
+import { Link } from 'react-router-dom'
+
 import MuiCard, { CardProps as MuiCardProps } from '@mui/material/Card'
 import CardHeader from '@mui/material/CardHeader'
 import CardContent from '@mui/material/CardContent'
 import Avatar from '@mui/material/Avatar'
-import { styled, alpha } from '@mui/material/styles'
 import Menu, { MenuProps } from '@mui/material/Menu'
-import { Link } from 'react-router-dom'
+import { styled, alpha } from '@mui/material/styles'
+
 import Truncate from '@/components/Truncate'
 import stringToColor from '@/functions/stringToColor'
 
@@ -28,14 +30,8 @@ const StyledAvatar = styled(Avatar)({
 export const StyledMenu = styled((props: MenuProps) => (
   <Menu
     elevation={0}
-    anchorOrigin={{
-      vertical: 'bottom',
-      horizontal: 'center',
-    }}
-    transformOrigin={{
-      vertical: 'top',
-      horizontal: 'center',
-    }}
+    anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+    transformOrigin={{ vertical: 'top', horizontal: 'center' }}
     {...props}
   />
 ))(({ theme }) => ({
@@ -68,38 +64,52 @@ export const StyledMenu = styled((props: MenuProps) => (
   },
 }))
 
-export function Card(props: CardProps) {
-  const { width = 300, to, title, subtitle, avatar, action } = props
+const CardComponent: React.FC<CardProps> = ({
+  width = 300,
+  to,
+  title,
+  subtitle,
+  avatar,
+  action,
+  ...rest
+}) => {
+  const bgColor = React.useMemo(() => stringToColor(title), [title])
+
+  const titleWidth = React.useMemo(() => width - 72, [width])
+  const subtitleWidth = React.useMemo(() => width - 107, [width])
 
   return (
-    <MuiCard>
-      <Link to={to}>
-        <CardHeader
-          sx={{ bgcolor: stringToColor(title) }}
-          title={
-            <Truncate
-              width={width - 72}
-              variant="h6"
-              sx={{ textTransform: 'uppercase', fontWeight: 400, mb: 2 }}
-            >
-              {title}
-            </Truncate>
-          }
-          subheader={
-            <Truncate
-              width={width - 107}
-              variant="body2"
-              sx={{ color: 'text.secondary' }}
-            >
-              {subtitle}
-            </Truncate>
-          }
-          action={action}
-        />
-      </Link>
+    <MuiCard sx={{ position: 'relative' }} {...rest}>
+      <Link
+        to={to}
+        style={{ position: 'absolute', width: '100%', height: 100 }}
+      />
+      <CardHeader
+        title={
+          <Truncate
+            variant="h6"
+            width={titleWidth}
+            textTransform="uppercase"
+            fontWeight={500}
+            color="white"
+            gutterBottom
+          >
+            {title}
+          </Truncate>
+        }
+        subheader={
+          <Truncate width={subtitleWidth} variant="body2" color="white">
+            {subtitle}
+          </Truncate>
+        }
+        action={action}
+        sx={{ bgcolor: bgColor }}
+      />
       <CardContent sx={{ height: 137 }}>
         <StyledAvatar src={avatar} />
       </CardContent>
     </MuiCard>
   )
 }
+
+export const Card = React.memo(CardComponent)
