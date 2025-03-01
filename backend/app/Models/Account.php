@@ -9,6 +9,7 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Sanctum\HasApiTokens;
 
 /**
  * Class Account
@@ -41,6 +42,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Account extends Model
 {
+	use HasApiTokens;
+
 	protected $table = 'accounts';
 
 	protected $casts = [
@@ -87,7 +90,7 @@ class Account extends Model
 
 	public function classes()
 	{
-		return $this->hasMany(Class::class);
+		return $this->hasMany(Classes::class);
 	}
 
 	public function coordinator()

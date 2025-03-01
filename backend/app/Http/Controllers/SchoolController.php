@@ -8,6 +8,7 @@ use Illuminate\Validation\ValidationException;
 use Exception;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class SchoolController extends Controller
 {
@@ -21,16 +22,22 @@ class SchoolController extends Controller
     public function create(Request $request)
     {
         try{
+
+            $user = Auth::user();
+            $id = $user->id;
+
             $validated = $request->validate([
-                'name' => 'required|string|max:500',
-		        'cnpj'  => 'required|regex:/^\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$/',
+                'name' => 'required|string|max:100',
+		        'cnpj'  => 'required|max:18',
 		        'address'  => 'required|string|max:1000',
 		        'email'  => 'required|email',
-		        'phone'  => 'required|string|regex:/^\(?\d{2}\)?\s?(?:9\d{4}|\d{4})-?\d{4}$/',
-		        'file'  => 'file|mimes:jpeg,png,pdf|max:5120'
+		        'phone'  => 'required|string|max:16',
+		        'file'  => 'nullable|file|mimes:jpeg,png,pdf|max:5120'
             ]);
-            
-            $school = $this->schoolService->create($validated);
+
+            $arrayData = array_merge($validated, ['account_id' => $id]);
+
+            $school = $this->schoolService->create($arrayData);
     
             return response()->json([
                 'status' => "OK",
@@ -51,7 +58,7 @@ class SchoolController extends Controller
         }
         catch(Exception $e){
             return response()->json([
-                'error' => $e
+                'error' => $e->getMessage()
             ], 400);
         }
         

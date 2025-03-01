@@ -25,7 +25,7 @@ class AccountController extends Controller
             $validated = $request->validate([
                 'email' => 'required|string|email|max:255',
                 'password' => 'required|string|max:255|min:8|regex:/[A-Z]/|regex:/[0-9]/|regex:/[@$!%*?&.#]/',
-                'file' => 'file|mimes:jpeg,png,pdf|max:5120', ,
+                'file' => 'nullable|file|mimes:jpeg,png,pdf',
                 'status' => 'in:ACTIVE,INACTIVE',
                 'role' => 'required|in:ADMINISTRATOR,COORDINATOR,MONITOR,STUDENT',
                 'code' => 'required|string|size:6',
@@ -135,7 +135,7 @@ class AccountController extends Controller
                 'id' => 'required|int',
                 'email' => 'required|string|email|max:255',
                 'password' => 'string|max:255|min:8|regex:/[A-Z]/|regex:/[0-9]/|regex:/[@$!%*?&.#]/',
-                'file' => 'file|mimes:jpeg,png,pdf|max:5120', ,
+                'file' => 'nullable|file|mimes:jpeg,png,pdf|max:5120',
                 'status' => 'in:ACTIVE,INACTIVE',
                 'role' => 'in:ADMINISTRATOR,COORDINATOR,MONITOR,STUDENT',
                 'code' => 'required|string|size:6',

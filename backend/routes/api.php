@@ -5,18 +5,20 @@ use App\Http\Controllers\AdministratorController;
 use App\Http\Controllers\ApiController;
 use App\Http\Controllers\CoordinatorController;
 use App\Http\Controllers\MonitorController;
+use App\Http\Controllers\SchoolController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\VerificationCodeController;
+use App\Http\Middleware\CheckRole;
 use Illuminate\Support\Facades\Route;
 
 //Rota Feita
 Route::post('/generate_code', [VerificationCodeController::class, 'create']);
 
 Route::post('/login', [ApiController::class, 'login']);//realiza login e cria token
-Route::post('/logout', [ApiController::class, 'logout'])->middleware(['auth:sanctum','role:ADMINISTRATOR|COORDENATOR|MONITOR|STUDENT']);
+Route::post('/logout', [ApiController::class, 'logout'])->middleware(['auth:sanctum',CheckRole::class.':ADMINISTRATOR|COORDENATOR|MONITOR|STUDENT']);
 
 
-Route::prefix('admin')->middleware(['auth:sanctum','role:ADMINISTRATOR'])->group(function () {
+Route::prefix('admin')->middleware(['auth:sanctum', CheckRole::class.':ADMINISTRATOR'])->group(function () {
     Route::post('/register', [AdministratorController::class, 'create']);
     Route::put('/update', [AdministratorController::class, 'update']);
     Route::get('/show', [AdministratorController::class, 'show']);
@@ -24,7 +26,7 @@ Route::prefix('admin')->middleware(['auth:sanctum','role:ADMINISTRATOR'])->group
     Route::delete('/delete', [AdministratorController::class, 'destroy']);
 });//Rotas Feitas
 
-Route::prefix('coordinator')->middleware(['auth:sanctum','role:ADMINISTRATOR|COORDENATOR'])->group(function () {
+Route::prefix('coordinator')->middleware(['auth:sanctum', CheckRole::class.':ADMINISTRATOR|COORDENATOR'])->group(function () {
     Route::post('/register', [CoordinatorController::class, 'create']);//registrar email de coordenador
     Route::put('/update', [CoordinatorController::class, 'update']);//atualizar email de coordenador
     Route::get('/show', [CoordinatorController::class, 'show']);
@@ -32,7 +34,7 @@ Route::prefix('coordinator')->middleware(['auth:sanctum','role:ADMINISTRATOR|COO
     Route::delete('/delete', [CoordinatorController::class, 'destroy']);//deletar email de coordenador
 });//Rotas Feitas
 
-Route::prefix('monitor')->middleware(['auth:sanctum','role:ADMINISTRATOR|COORDENATOR|MONITOR'])->group(function () {
+Route::prefix('monitor')->middleware(['auth:sanctum', CheckRole::class.':ADMINISTRATOR|COORDENATOR|MONITOR'])->group(function () {
     Route::post('/register', [MonitorController::class, 'create']);//registrar email de monitor
     Route::put('/update', [MonitorController::class, 'update']);//atualizar email de monitor
     Route::get('/show', [MonitorController::class, 'show']);
@@ -40,10 +42,10 @@ Route::prefix('monitor')->middleware(['auth:sanctum','role:ADMINISTRATOR|COORDEN
     Route::delete('/delete', [MonitorController::class, 'destroy']);//deletar email de monitor
 });//Rotas Feitas
 
-Route::prefix('student')->middleware(['auth:sanctum','role:ADMINISTRATOR|COORDENATOR|MONITOR|STUDENT'])->group(function () {
+Route::prefix('student')->middleware(['auth:sanctum', CheckRole::class.':ADMINISTRATOR|COORDENATOR|MONITOR|STUDENT'])->group(function () {
     Route::post('/register', [StudentController::class, 'create']);//registrar email de student
     Route::put('/update', [StudentController::class, 'update']);
-    Route::put('/update_name', [StudentController::class, 'update_name'])->middleware(['auth:sanctum','role:ADMINISTRATOR|COORDENATOR|MONITOR']);
+    Route::put('/update_name', [StudentController::class, 'update_name'])->middleware(['auth:sanctum',CheckRole::class.':ADMINISTRATOR|COORDENATOR|MONITOR']);
     Route::get('/show', [StudentController::class, 'show']);
     Route::get('/all_show', [StudentController::class, 'all']);
     Route::delete('/delete', [StudentController::class, 'destroy']);//deletar email de student
@@ -51,24 +53,24 @@ Route::prefix('student')->middleware(['auth:sanctum','role:ADMINISTRATOR|COORDEN
 
 Route::prefix('account')->group(function () {
     Route::post('/register', [AccountController::class, 'create']);
-    Route::put('/update', [AccountController::class, 'update'])->middleware(['auth:sanctum','role:ADMINISTRATOR|COORDENATOR|MONITOR|STUDENT']);//
-    Route::get('/show', [AccountController::class, 'show'])->middleware(['auth:sanctum','role:ADMINISTRATOR|COORDENATOR|MONITOR|STUDENT']);
-    Route::get('/all_show', [AccountController::class, 'all'])->middleware('role:ADMINISTRATOR|COORDENATOR|MONITOR|STUDENT');
-    Route::delete('/delete', [AccountController::class, 'destroy'])->middleware('role:ADMINISTRATOR|COORDENATOR|MONITOR|STUDENT');//
+    Route::put('/update', [AccountController::class, 'update'])->middleware(['auth:sanctum',CheckRole::class.':ADMINISTRATOR|COORDENATOR|MONITOR|STUDENT']);//
+    Route::get('/show', [AccountController::class, 'show'])->middleware(['auth:sanctum',CheckRole::class.':ADMINISTRATOR|COORDENATOR|MONITOR|STUDENT']);
+    Route::get('/all_show', [AccountController::class, 'all'])->middleware(CheckRole::class.':ADMINISTRATOR|COORDENATOR|MONITOR|STUDENT');
+    Route::delete('/delete', [AccountController::class, 'destroy'])->middleware(CheckRole::class.':ADMINISTRATOR|COORDENATOR|MONITOR|STUDENT');//
 });//Rotas Feitas
 
-Route::prefix('school')->middleware('role:ADMINISTRATOR|COORDENATOR')->group(function () {
-    Route::post('/register', [ApiController::class, 'registerSchool']);
-    Route::put('/update', [ApiController::class, 'updateSchool']);
-    Route::get('/show', [ApiController::class, 'showSchool']);
-    Route::get('/all_show', [ApiController::class, 'allShowSchool']);
-    Route::delete('/delete', [ApiController::class, 'deleteScholl']);
-});
+Route::prefix('school')->middleware(CheckRole::class.':ADMINISTRATOR|COORDENATOR')->group(function () {
+    Route::post('/register', [SchoolController::class, 'create']);
+    Route::put('/update', [SchoolController::class, 'update']);
+    Route::get('/show', [SchoolController::class, 'show']);
+    Route::get('/all_show', [SchoolController::class, 'all']);
+    Route::delete('/delete', [SchoolController::class, 'destroy']);
+});//Rotas Feitas
 
-Route::prefix('class')->middleware('role:ADMINISTRATOR|COORDENATOR|MONITOR')->group(function () {
+Route::prefix('class')->middleware(CheckRole::class.':ADMINISTRATOR|COORDENATOR|MONITOR')->group(function () {
     Route::post('/register', [ApiController::class, 'registerClass']);
     Route::put('/update', [ApiController::class, 'updateClass']);
-    Route::get('/show', [ApiController::class, 'showClass'])->middleware('role:ADMINISTRATOR|COORDENATOR|MONITOR|STUDENT');
+    Route::get('/show', [ApiController::class, 'showClass'])->middleware(CheckRole::class.':ADMINISTRATOR|COORDENATOR|MONITOR|STUDENT');
     Route::get('/all_show', [ApiController::class, 'allShowClass']);
     Route::delete('/delete', [ApiController::class, 'deleteClass']);
 });
@@ -76,12 +78,12 @@ Route::prefix('class')->middleware('role:ADMINISTRATOR|COORDENATOR|MONITOR')->gr
 Route::prefix('activity')->group(function () {
     Route::post('/register', [ApiController::class, 'registerActivity']);
     Route::put('/update', [ApiController::class, 'updateActivity']);
-    Route::get('/show', [ApiController::class, 'showActivity'])->middleware('role:ADMINISTRATOR|COORDENATOR|MONITOR|STUDENT');
-    Route::get('/all_show', [ApiController::class, 'allShowActivity'])->middleware('role:ADMINISTRATOR|COORDENATOR|MONITOR|STUDENT');
+    Route::get('/show', [ApiController::class, 'showActivity'])->middleware(CheckRole::class.':ADMINISTRATOR|COORDENATOR|MONITOR|STUDENT');
+    Route::get('/all_show', [ApiController::class, 'allShowActivity'])->middleware(CheckRole::class.':ADMINISTRATOR|COORDENATOR|MONITOR|STUDENT');
     Route::delete('/delete', [ApiController::class, 'deleteActivity']);
 });
 
-Route::prefix('activityComments')->middleware('role:ADMINISTRATOR|COORDENATOR|MONITOR|STUDENT')->group(function () {
+Route::prefix('activityComments')->middleware(CheckRole::class.':ADMINISTRATOR|COORDENATOR|MONITOR|STUDENT')->group(function () {
     Route::post('/register', [ApiController::class, 'registerActivityComment']);
     Route::put('/update', [ApiController::class, 'updateActivityComment']);
     Route::get('/show', [ApiController::class, 'showActivityComment']);
@@ -89,15 +91,15 @@ Route::prefix('activityComments')->middleware('role:ADMINISTRATOR|COORDENATOR|MO
     Route::delete('/delete', [ApiController::class, 'deleteActivityComment']);
 });
 
-Route::prefix('lesson')->middleware('role:ADMINISTRATOR|COORDENATOR|MONITOR')->group(function () {
+Route::prefix('lesson')->middleware(CheckRole::class.':ADMINISTRATOR|COORDENATOR|MONITOR')->group(function () {
     Route::post('/register', [ApiController::class, 'registerLesson']);
     Route::put('/update', [ApiController::class, 'updateLesson']);
-    Route::get('/show', [ApiController::class, 'showLesson'])->middleware('role:ADMINISTRATOR|COORDENATOR|MONITOR|STUDENT');
-    Route::get('/all_show', [ApiController::class, 'allShowLesson'])->middleware('role:ADMINISTRATOR|COORDENATOR|MONITOR|STUDENT');
+    Route::get('/show', [ApiController::class, 'showLesson'])->middleware(CheckRole::class.':ADMINISTRATOR|COORDENATOR|MONITOR|STUDENT');
+    Route::get('/all_show', [ApiController::class, 'allShowLesson'])->middleware(CheckRole::class.':ADMINISTRATOR|COORDENATOR|MONITOR|STUDENT');
     Route::delete('/delete', [ApiController::class, 'deleteLesson']);
 });
 
-Route::prefix('lessonComments')->middleware('role:ADMINISTRATOR|COORDENATOR|MONITOR|STUDENT')->group(function () {
+Route::prefix('lessonComments')->middleware(CheckRole::class.':ADMINISTRATOR|COORDENATOR|MONITOR|STUDENT')->group(function () {
     Route::post('/register', [ApiController::class, 'registerLessonComment']);
     Route::put('/update', [ApiController::class, 'updateLessonComment']);
     Route::get('/show', [ApiController::class, 'showLessonComment']);

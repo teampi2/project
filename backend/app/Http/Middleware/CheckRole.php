@@ -9,25 +9,25 @@ use Symfony\Component\HttpFoundation\Response;
 
 class CheckRole
 {
-    public function handle(Request $request, Closure $next, string ...$roles): Response
+    
+    /**
+
+     * Handle an incoming request.
+
+     *
+
+     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
+
+     */
+    public function handle(Request $request, Closure $next, string $roles): Response
     {
-        if (!Auth::check()) {
+        if (!Auth::guard('sanctum')->user()) {
             return response()->json("Usuário não Autenticado.", 403);
         }
 
-        $user = Auth::account();
-
+        $user = Auth::guard('sanctum')->user();
         $userRole = $user->role;
-
-        $roleHierarchy = [
-            'ADMINISTRATOR' => 4,
-            'COORDINATOR' => 3,
-            'MONITOR' => 2,
-            'STUDENT' => 1,
-        ];
-
-        $requiredRoles = explode('|', $roles[0]);
-
+        $requiredRoles = explode('|', $roles);
 
         if (in_array($userRole, $requiredRoles)) {
             return $next($request);

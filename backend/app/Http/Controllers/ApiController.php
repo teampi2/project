@@ -30,7 +30,7 @@ class ApiController extends Controller
     {
         $validated = $request->validate([
             'email' => 'required|string|email|max:255',
-            'password' => 'required|string|max:255|min:8|regex:/[A-Z]/|regex:/[0-9]/|regex:/[@$!%*?&#]/'
+            'password' => 'required|string|max:255|min:8'
         ]);
 
         $user = Account::where([

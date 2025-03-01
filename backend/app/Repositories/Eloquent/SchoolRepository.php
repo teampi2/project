@@ -4,7 +4,7 @@ namespace App\Repositories\Eloquent;
 
 use App\Models\School;
 use App\Repositories\Contracts\SchoolRepositoryInterface;
-use Exception;
+
 
 class SchoolRepository implements SchoolRepositoryInterface
 {

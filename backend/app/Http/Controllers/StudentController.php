@@ -24,7 +24,9 @@ class StudentController extends Controller
         try{
             $validated = $request->validate([
                 'name' => 'required|string|max:2000',
-                'email' => 'required|email'
+                'enrollment' => 'required|string|max:25',
+                'email' => 'required|email',
+                'school_id' => 'required|int'
             ]);
             
             $student = $this->studentService->create($validated);
