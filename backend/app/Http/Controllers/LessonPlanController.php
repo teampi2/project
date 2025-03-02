@@ -2,50 +2,43 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\AccountService;
-use App\Services\VerificationCodeService;
+use App\Services\LessonPlanService;
+use Illuminate\Validation\ValidationException;
 use Exception;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
-use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Auth;
 
-class AccountController extends Controller
+class LessonPlanController extends Controller
 {
-    protected $accountService, $verificationCodeService;
-
-    public function __construct(AccountService $accountService, VerificationCodeService $verificationCodeService)
+    protected $lessonplanService;
+    
+    public function __construct(LessonPlanService $lessonplanService)
     {
-        $this->accountService = $accountService;
-        $this->verificationCodeService = $verificationCodeService;
+        $this->lessonplanService = $lessonplanService;
     }
 
     public function create(Request $request)
     {
-        try {
+        try{
             $validated = $request->validate([
-                'email' => 'required|string|email|max:255',
-                'password' => 'required|string|max:255|min:8|regex:/[A-Z]/|regex:/[0-9]/|regex:/[@$!%*?&.#]/',
-                'file' => 'nullable|file|mimes:jpeg,png',
-                'status' => 'in:ACTIVE,INACTIVE',
-                'role' => 'required|in:ADMINISTRATOR,COORDINATOR,MONITOR,STUDENT',
-                'code' => 'required|string|size:6',
+                'title' => 'required|string|max:100',
+                'description' => 'required|string|max:1500',
+                'objectives' => 'required|string|max:1000',
+                'materials' => 'string|max:1000',
+                'file' => 'file|mimes:zip,rar,pdf'
             ]);
+            
+            $user = Auth::user();
 
-            $code = $this->verificationCodeService->verify($validated['email'], $validated['code']);
+            $arrayData = array_merge($validated, ['account_id' => $user->id]);
 
-            if(!$code){
-                return response()->json([
-                    'status' => "OK",
-                    'error' => 'Código Invalido.'
-                ], 400);
-            }
-
-            $account = $this->accountService->create($validated);
-
+            $lessonplan = $this->lessonplanService->create($arrayData);
+    
             return response()->json([
                 'status' => "OK",
-                'account' => $account
-            ]);
+                'lessonplan' => $lessonplan
+            ], 200);
         }
         catch (ValidationException $e) {
             return response()->json([
@@ -64,16 +57,17 @@ class AccountController extends Controller
                 'error' => $e
             ], 400);
         }
+        
     }
 
     public function all(Request $request)
     {
         try {
-            $accounts = $this->accountService->all();
+            $lessonplans = $this->lessonplanService->all();
 
             return response()->json([
                 'status' => 'OK',
-                'admins' => $accounts
+                'lessonplans' => $lessonplans
             ], 200);
         }
         catch (ValidationException $e) {
@@ -102,11 +96,11 @@ class AccountController extends Controller
                 'id' => 'required|int'
             ]);
 
-            $account = $this->accountService->show($validated['id']);
+            $lessonplan = $this->lessonplanService->show($validated['id']);
 
             return response()->json([
                 'status' => "OK",
-                'account' => $account
+                'lessonplan' => $lessonplan
             ], 200);
         }
         catch (ValidationException $e) {
@@ -132,48 +126,40 @@ class AccountController extends Controller
     {
         try{
             $validated = $request->validate([
-                'id' => 'required|int',
-                'email' => 'required|string|email|max:255',
-                'password' => 'string|max:255|min:8|regex:/[A-Z]/|regex:/[0-9]/|regex:/[@$!%*?&.#]/',
-                'file' => 'nullable|file|mimes:jpeg,png',
-                'status' => 'in:ACTIVE,INACTIVE',
-                'role' => 'in:ADMINISTRATOR,COORDINATOR,MONITOR,STUDENT',
-                'code' => 'required|string|size:6',
+                'title' => 'required|string|max:100',
+                'description' => 'required|string|max:1500',
+                'objectives' => 'required|string|max:1000',
+                'materials' => 'string|max:1000',
+                'file' => 'file|mimes:zip,rar,pdf'
             ]);
 
-            $code = $this->verificationCodeService->verify($validated['email'], $validated['code']);
+            $user = Auth::user();
 
-            if(!$code){
-                return response()->json([
-                    'status' => "OK",
-                    'error' => 'Código Invalido.'
-                ], 400);
-            }
+            $arrayData = array_merge($validated, ['account_id' => $user->id]);
+            $arrayDataExc = collect($arrayData)->except('id')->toArray();
 
-            $arrayData = collect($validated)->except('id')->toArray();
-
-            $account = $this->accountService->update($validated['id'], $arrayData);
+            $lessonplan = $this->lessonplanService->update($validated['id'], $arrayDataExc);
 
             return response()->json([
                 'status' => "OK",
-                'account' => $account
+                'lessonplan' => $lessonplan
             ], 200);
-
-        }catch (ValidationException $e) {
+        }
+        catch (ValidationException $e) {
             return response()->json([
                 'message' => 'Data Invalid',
-                'errors' => $e->errors(),
+                'errorsV' => $e->errors(),
             ], 422);
         }
         catch (QueryException $e) {
             return response()->json([
                 'message' => 'Database error.',
-                'error' => $e->getMessage(),
+                'errorQ' => $e,
             ], 500);
         }
         catch(Exception $e){
             return response()->json([
-                'error' => $e
+                'errorG' => $e->getMessage()
             ], 400);
         }
     }
@@ -182,29 +168,17 @@ class AccountController extends Controller
     {
         try{
             $validated = $request->validate([
-                'id' => 'required|int',
-                'code' => 'required|string|size:6',
+                'id' => 'require|int'
             ]);
 
-            $code = $this->verificationCodeService->verify($validated['email'], $validated['code']);
-
-            if(!$code){
-                return response()->json([
-                    'status' => "OK",
-                    'error' => 'Código Invalido.'
-                ], 400);
-            }
-
-            $arrayData = [ 'status' => 'INACTIVE'];
-
-            $account = $this->accountService->update($validated['id'], $arrayData);
+            $this->lessonplanService->delete($validated['id']);
 
             return response()->json([
-                'status' => "OK",
-                'account' => $account
+                'status' => 'OK',
+                'message' => 'LessonPlan apagado com sucesso'
             ], 200);
-
-        }catch (ValidationException $e) {
+        }
+        catch (ValidationException $e) {
             return response()->json([
                 'message' => 'Data Invalid',
                 'errors' => $e->errors(),
