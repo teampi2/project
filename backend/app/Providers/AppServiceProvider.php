@@ -12,10 +12,12 @@ use App\Repositories\Contracts\StudentRepositoryInterface;
 use App\Repositories\Eloquent\StudentRepository;
 use App\Repositories\Contracts\AccountRepositoryInterface;
 use App\Repositories\Contracts\ClassesRepositoryInterface;
+use App\Repositories\Contracts\ClassStudentRepositoryInterface;
 use App\Repositories\Contracts\SchoolRepositoryInterface;
 use App\Repositories\Eloquent\AccountRepository;
 use App\Repositories\Contracts\VerificationCodeRepositoryInterface;
 use App\Repositories\Eloquent\ClassesRepository;
+use App\Repositories\Eloquent\ClassStudentRepository;
 use App\Repositories\Eloquent\SchoolRepository;
 use App\Repositories\Eloquent\VerificationCodeRepository;
 use Illuminate\Support\ServiceProvider;
@@ -34,6 +36,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(StudentRepositoryInterface::class, StudentRepository::class);
         $this->app->bind(SchoolRepositoryInterface::class, SchoolRepository::class);
         $this->app->bind(ClassesRepositoryInterface::class, ClassesRepository::class);
+        $this->app->bind(ClassStudentRepositoryInterface::class, ClassStudentRepository::class);
         $this->app->bind(CoordinatorRepositoryInterface::class, CoordinatorRepository::class);
         $this->app->bind(VerificationCodeRepositoryInterface::class, VerificationCodeRepository::class);
     }
