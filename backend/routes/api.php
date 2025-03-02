@@ -9,6 +9,7 @@ use App\Http\Controllers\ClassStudentController;
 use App\Http\Controllers\ClassTeacherController;
 use App\Http\Controllers\CoordinatorController;
 use App\Http\Controllers\LessonPlanController;
+use App\Http\Controllers\LessonController;
 use App\Http\Controllers\MonitorController;
 use App\Http\Controllers\SchoolController;
 use App\Http\Controllers\StudentController;
@@ -121,9 +122,9 @@ Route::prefix('lessonPlan')->middleware(['auth:sanctum', CheckRole::class.':ADMI
 });//Rotas Feitas
 
 Route::prefix('lesson')->middleware(['auth:sanctum', CheckRole::class.':ADMINISTRATOR|COORDENATOR|MONITOR'])->group(function () {
-    Route::post('/register', [LessonPlanController::class, 'create']);
-    Route::put('/update', [LessonPlanController::class, 'update']);
-    Route::get('/show', [LessonPlanController::class, 'show']);
-    Route::get('/all_show', [LessonPlanController::class, 'all']);
-    Route::delete('/delete', [LessonPlanController::class, 'destroy']);
-});
+    Route::post('/register', [LessonController::class, 'create']);
+    Route::put('/update', [LessonController::class, 'update']);
+    Route::get('/show', [LessonController::class, 'show'])->middleware(['auth:sanctum', CheckRole::class.':ADMINISTRATOR|COORDENATOR|MONITOR']);
+    Route::get('/all_show', [LessonController::class, 'all']);
+    Route::delete('/delete', [LessonController::class, 'destroy']);
+});//Rotas Feitas

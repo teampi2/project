@@ -16,6 +16,7 @@ use App\Repositories\Contracts\ClassesRepositoryInterface;
 use App\Repositories\Contracts\ClassStudentRepositoryInterface;
 use App\Repositories\Contracts\ClassTeacherRepositoryInterface;
 use App\Repositories\Contracts\LessonPlanRepositoryInterface;
+use App\Repositories\Contracts\LessonRepositoryInterface;
 use App\Repositories\Contracts\SchoolRepositoryInterface;
 use App\Repositories\Contracts\StudentActivityRepositoryInterface;
 use App\Repositories\Eloquent\AccountRepository;
@@ -25,6 +26,7 @@ use App\Repositories\Eloquent\ClassesRepository;
 use App\Repositories\Eloquent\ClassStudentRepository;
 use App\Repositories\Eloquent\ClassTeacherRepository;
 use App\Repositories\Eloquent\LessonPlanRepository;
+use App\Repositories\Eloquent\LessonRepository;
 use App\Repositories\Eloquent\SchoolRepository;
 use App\Repositories\Eloquent\StudentActivityRepository;
 use App\Repositories\Eloquent\VerificationCodeRepository;
@@ -51,6 +53,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(ActivityRepositoryInterface::class, ActivityRepository::class);
         $this->app->bind(StudentActivityRepositoryInterface::class, StudentActivityRepository::class);
         $this->app->bind(LessonPlanRepositoryInterface::class, LessonPlanRepository::class);
+        $this->app->bind(LessonRepositoryInterface::class, LessonRepository::class);
     }
 
     /**
