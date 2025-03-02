@@ -23,7 +23,7 @@ class ClassStudentRepository implements ClassStudentRepositoryInterface
 
         return [
             'class_id' => $turma_id,
-		    'students' => $ClassStudent->student
+		    'students' => $ClassStudent->pluck('student')->toArray()
         ];
     } 
 
