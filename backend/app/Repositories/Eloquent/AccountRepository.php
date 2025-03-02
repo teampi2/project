@@ -37,13 +37,15 @@ class AccountRepository implements AccountRepositoryInterface
             return null;
         }
 
-        return [
+        $user = [
             'id' => $account->id,
             'email' => $account->email,
             'role' => $account->role,
             'status' => $account->status,
-            'name' => $this->getAccountName($account)['name'],
+            'name' => $this->getAccountName($account)['name']
         ];
+
+        return $user;
     }
 
     public function getAccountName(Account $account)

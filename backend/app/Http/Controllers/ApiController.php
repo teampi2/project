@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Account;
+use App\Models\Administrator;
+use App\Models\Coordinator;
+use App\Models\Monitor;
+use App\Models\Student;
 use App\Services\AccountService;
-use App\Services\AdministratorService;
-use App\Services\VerificationCodeService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -20,6 +22,28 @@ class ApiController extends Controller
         $this->accountService = $accountService;
     }
 
+    public function me(Request $resquest){
+        $user = Auth::user();
+        $name = null;
+        if($user->role == "ADMINISTRATOR"){
+            $name = Administrator::where('email', $user->email)->get('name');
+        }
+        if($user->role == "MONITOR"){
+            $name = Monitor::where('email', $user->email)->get('name');
+        }
+        if($user->role == "COORDINATOR"){
+            $name = Coordinator::where('email', $user->email)->get('name');
+        }
+        if($user->role == "STUDENT"){
+            $name = Student::where('email', $user->email)->get('name');
+        }
+
+        return response()->json([
+            'user' => $user,
+            'name' => $name
+        ], 200);
+    }
+
     public function login(Request $request)
     {
         $validated = $request->validate([
@@ -30,6 +54,20 @@ class ApiController extends Controller
         $user = Account::where([
             'email' => $validated['email'],
         ])->first();
+        
+        $name = null;
+        if($user->role == "ADMINISTRATOR"){
+            $name = Administrator::where('email', $validated['email'])->get('name');
+        }
+        if($user->role == "MONITOR"){
+            $name = Monitor::where('email', $validated['email'])->get('name');
+        }
+        if($user->role == "COORDINATOR"){
+            $name = Coordinator::where('email', $validated['email'])->get('name');
+        }
+        if($user->role == "STUDENT"){
+            $name = Student::where('email', $validated['email'])->get('name');
+        }
 
         if(Hash::check($validated['password'], $user->password)){
             $token = $user->createToken($user->email)->plainTextToken;
@@ -37,6 +75,7 @@ class ApiController extends Controller
             return response()->json([
                 'status' => "OK",
                 'user' => $user,
+                'userName' => $name,
                 'token' => $token
             ], 200);
         }else{

@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Route;
 Route::post('/generate_code', [VerificationCodeController::class, 'create']);
 
 Route::post('/login', [ApiController::class, 'login']);//realiza login e cria token
+Route::get('/me', [ApiController::class, 'me']);
 Route::post('/logout', [ApiController::class, 'logout'])->middleware(['auth:sanctum', CheckRole::class.':ADMINISTRATOR|COORDENATOR|MONITOR|STUDENT']);
 
 
@@ -111,7 +112,7 @@ Route::prefix('studentActivity')->middleware(['auth:sanctum', CheckRole::class.'
     Route::delete('/delete', [ActivityController::class, 'destroy']);
 });//Rotas Feitas
 
-Route::prefix('lessonPlan')->middleware(CheckRole::class.':ADMINISTRATOR|COORDENATOR|MONITOR')->group(function () {
+Route::prefix('lessonPlan')->middleware(['auth:sanctum', CheckRole::class.':ADMINISTRATOR|COORDENATOR|MONITOR'])->group(function () {
     Route::post('/register', [LessonPlanController::class, 'create']);
     Route::put('/update', [LessonPlanController::class, 'update']);
     Route::get('/show', [LessonPlanController::class, 'show']);
@@ -119,18 +120,10 @@ Route::prefix('lessonPlan')->middleware(CheckRole::class.':ADMINISTRATOR|COORDEN
     Route::delete('/delete', [LessonPlanController::class, 'destroy']);
 });//Rotas Feitas
 
-Route::prefix('activityComments')->middleware(['auth:sanctum', CheckRole::class.':ADMINISTRATOR|COORDENATOR|MONITOR|STUDENT'])->group(function () {
-    Route::post('/register', [ApiController::class, 'registerActivityComment']);
-    Route::put('/update', [ApiController::class, 'updateActivityComment']);
-    Route::get('/all_show', [ApiController::class, 'allShowActivityComment']);
-    Route::delete('/delete', [ApiController::class, 'deleteActivityComment']);
+Route::prefix('lesson')->middleware(['auth:sanctum', CheckRole::class.':ADMINISTRATOR|COORDENATOR|MONITOR'])->group(function () {
+    Route::post('/register', [LessonPlanController::class, 'create']);
+    Route::put('/update', [LessonPlanController::class, 'update']);
+    Route::get('/show', [LessonPlanController::class, 'show']);
+    Route::get('/all_show', [LessonPlanController::class, 'all']);
+    Route::delete('/delete', [LessonPlanController::class, 'destroy']);
 });
-
-Route::prefix('lessonComments')->middleware(CheckRole::class.':ADMINISTRATOR|COORDENATOR|MONITOR|STUDENT')->group(function () {
-    Route::post('/register', [ApiController::class, 'registerLessonComment']);
-    Route::put('/update', [ApiController::class, 'updateLessonComment']);
-    Route::get('/show', [ApiController::class, 'showLessonComment']);
-    Route::get('/all_show', [ApiController::class, 'allShowLessonComment']);
-    Route::delete('/delete', [ApiController::class, 'deleteLessonComment']);
-});
-
