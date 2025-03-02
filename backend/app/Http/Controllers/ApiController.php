@@ -40,7 +40,7 @@ class ApiController extends Controller
 
         return response()->json([
             'user' => $user,
-            'name' => $name
+            'name' => $name['name']
         ], 200);
     }
 
@@ -75,7 +75,7 @@ class ApiController extends Controller
             return response()->json([
                 'status' => "OK",
                 'user' => $user,
-                'userName' => $name,
+                'userName' => $name['name'],
                 'token' => $token
             ], 200);
         }else{
