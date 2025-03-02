@@ -1,10 +1,12 @@
 <?php
 
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\AdministratorController;
 use App\Http\Controllers\ApiController;
 use App\Http\Controllers\ClassesController;
 use App\Http\Controllers\ClassStudentController;
+use App\Http\Controllers\ClassTeacherController;
 use App\Http\Controllers\CoordinatorController;
 use App\Http\Controllers\MonitorController;
 use App\Http\Controllers\SchoolController;
@@ -85,13 +87,21 @@ Route::prefix('classStudent')->middleware(['auth:sanctum', CheckRole::class.':AD
     Route::delete('/delete', [ClassStudentController::class, 'destroy']);
 });//Rotas Feitas
 
+Route::prefix('classTeacher')->middleware(['auth:sanctum', CheckRole::class.':ADMINISTRATOR|COORDENATOR|MONITOR'])->group(function () {
+    Route::post('/register', [ClassTeacherController::class, 'create']);
+    Route::put('/update', [ClassTeacherController::class, 'update']);
+    Route::get('/showTurmasByUser', [ClassTeacherController::class, 'showByTurmasForUser']);
+    Route::get('/showUsersByTurma', [ClassTeacherController::class, 'showByUsersForTurma'])->middleware(['auth:sanctum', CheckRole::class.':ADMINISTRATOR|COORDENATOR|MONITOR|STUDENT']);
+    Route::delete('/delete', [ClassTeacherController::class, 'destroy']);
+});//Rotas Feitas
+
 Route::prefix('activity')->middleware(['auth:sanctum', CheckRole::class.':ADMINISTRATOR|COORDENATOR|MONITOR'])->group(function () {
-    Route::post('/register', [ApiController::class, 'registerActivity']);
-    Route::put('/update', [ApiController::class, 'updateActivity']);
-    Route::get('/show', [ApiController::class, 'showActivity'])->middleware(['auth:sanctum', CheckRole::class.':ADMINISTRATOR|COORDENATOR|MONITOR|STUDENT']);
-    Route::get('/all_show', [ApiController::class, 'allShowActivity'])->middleware(['auth:sanctum', CheckRole::class.':ADMINISTRATOR|COORDENATOR|MONITOR|STUDENT']);
-    Route::delete('/delete', [ApiController::class, 'deleteActivity']);
-});
+    Route::post('/register', [ActivityController::class, 'create']);
+    Route::put('/update', [ActivityController::class, 'update']);
+    Route::get('/show', [ActivityController::class, 'show'])->middleware(['auth:sanctum', CheckRole::class.':ADMINISTRATOR|COORDENATOR|MONITOR|STUDENT']);
+    Route::get('/showByTurma', [ActivityController::class, 'showByTurma'])->middleware(['auth:sanctum', CheckRole::class.':ADMINISTRATOR|COORDENATOR|MONITOR|STUDENT']);
+    Route::delete('/delete', [ActivityController::class, 'destroy']);
+});//Rotas Feitas
 
 Route::prefix('activityComments')->middleware(['auth:sanctum', CheckRole::class.':ADMINISTRATOR|COORDENATOR|MONITOR|STUDENT'])->group(function () {
     Route::post('/register', [ApiController::class, 'registerActivityComment']);

@@ -59,7 +59,7 @@ class Activity extends Model
 
 	public function class()
 	{
-		return $this->belongsTo(Class::class);
+		return $this->belongsTo(Classes::class);
 	}
 
 	public function activity_comments()
