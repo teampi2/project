@@ -7,7 +7,8 @@ a {
   text-decoration: none;
 }
 
-.css-4ys0rs-MuiInputBase-input-MuiFilledInput-input:-webkit-autofill {
+.css-4ys0rs-MuiInputBase-input-MuiFilledInput-input:-webkit-autofill,
+.css-i5v8s4-MuiInputBase-input-MuiOutlinedInput-input:-webkit-autofill {
   -webkit-box-shadow: 0 0 0 100px transparent inset !important;
   -webkit-text-fill-color: inherit !important;
 }
