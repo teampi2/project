@@ -77,7 +77,7 @@ Route::prefix('class')->middleware(['auth:sanctum', CheckRole::class.':ADMINISTR
     Route::delete('/delete', [ClassesController::class, 'destroy']);
 });//Rotas Feitas
 
-Route::prefix('class')->middleware(['auth:sanctum', CheckRole::class.':ADMINISTRATOR|COORDENATOR|MONITOR'])->group(function () {
+Route::prefix('classStudent')->middleware(['auth:sanctum', CheckRole::class.':ADMINISTRATOR|COORDENATOR|MONITOR'])->group(function () {
     Route::post('/register', [ClassStudentController::class, 'create']);
     Route::put('/update', [ClassStudentController::class, 'update']);
     Route::get('/showTurmasByUser', [ClassStudentController::class, 'showByTurmasForUser'])->middleware(['auth:sanctum', CheckRole::class.':ADMINISTRATOR|COORDENATOR|MONITOR|STUDENT']);
