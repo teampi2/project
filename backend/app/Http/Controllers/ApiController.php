@@ -37,7 +37,7 @@ class ApiController extends Controller
             'email' => $validated['email'],
         ])->first();
 
-        if(Hash::check($validated['password'], $user['password'])){
+        if(Hash::check($validated['password'], $user->password)){
             $token = $user->createToken('NomeDoToken')->plainTextToken;
 
             return response()->json([
