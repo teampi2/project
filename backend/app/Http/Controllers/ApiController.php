@@ -38,9 +38,20 @@ class ApiController extends Controller
             $name = Student::where('email', $user->email)->first();
         }
 
+        $user_response = [
+            "id" => $user['id'],
+            "email" => $user['email'],
+            "image" => $user['image'],
+            "status" => $user['status'],
+            "role" => $user['role'],
+            "created_at" => $user['created_at'],
+            "updated_at" => $user['update_at'],
+            "role_id" => $user['role_id'],
+            "name" => $name['name']
+        ];
+
         return response()->json([
-            'user' => $user,
-            'name' => $name['name']
+            'user' => $user_response
         ], 200);
     }
 
@@ -72,10 +83,20 @@ class ApiController extends Controller
         if(Hash::check($validated['password'], $user->password)){
             $token = $user->createToken($user->email)->plainTextToken;
 
+            $user_response = [
+                "id" => $user['id'],
+                "email" => $user['email'],
+                "image" => $user['image'],
+                "status" => $user['status'],
+                "role" => $user['role'],
+                "created_at" => $user['created_at'],
+                "updated_at" => $user['update_at'],
+                "role_id" => $user['role_id'],
+                "name" => $name['name']
+            ];
+    
             return response()->json([
-                'status' => "OK",
-                'user' => $user,
-                'userName' => $name['name'],
+                'user' => $user_response,
                 'token' => $token
             ], 200);
         }else{
