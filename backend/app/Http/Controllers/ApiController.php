@@ -26,16 +26,16 @@ class ApiController extends Controller
         $user = Auth::user();
         $name = null;
         if($user->role == "ADMINISTRATOR"){
-            $name = Administrator::where('email', $user->email)->get('name');
+            $name = Administrator::where('email', $user->email)->first();
         }
         if($user->role == "MONITOR"){
-            $name = Monitor::where('email', $user->email)->get('name');
+            $name = Monitor::where('email', $user->email)->first();
         }
         if($user->role == "COORDINATOR"){
-            $name = Coordinator::where('email', $user->email)->get('name');
+            $name = Coordinator::where('email', $user->email)->first();
         }
         if($user->role == "STUDENT"){
-            $name = Student::where('email', $user->email)->get('name');
+            $name = Student::where('email', $user->email)->first();
         }
 
         return response()->json([
@@ -57,16 +57,16 @@ class ApiController extends Controller
         
         $name = null;
         if($user->role == "ADMINISTRATOR"){
-            $name = Administrator::where('email', $validated['email'])->get('name');
+            $name = Administrator::where('email', $validated['email'])->first();
         }
         if($user->role == "MONITOR"){
-            $name = Monitor::where('email', $validated['email'])->get('name');
+            $name = Monitor::where('email', $validated['email'])->first();
         }
         if($user->role == "COORDINATOR"){
-            $name = Coordinator::where('email', $validated['email'])->get('name');
+            $name = Coordinator::where('email', $validated['email'])->first();
         }
         if($user->role == "STUDENT"){
-            $name = Student::where('email', $validated['email'])->get('name');
+            $name = Student::where('email', $validated['email'])->first();
         }
 
         if(Hash::check($validated['password'], $user->password)){
