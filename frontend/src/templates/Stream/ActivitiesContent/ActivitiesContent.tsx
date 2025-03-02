@@ -7,7 +7,8 @@ export function ActivitiesContent() {
       {[...Array(3)].map((_, index) => (
         <ActivityItem
           key={index}
-          name={'Atividade ' + ++index}
+          id={++index}
+          name={'Atividade ' + index}
           dueDate={new Date()}
           date={new Date()}
           description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do

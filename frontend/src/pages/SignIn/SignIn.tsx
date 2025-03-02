@@ -10,20 +10,26 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
 import Anchor from '@mui/material/Link'
-import { Link } from 'react-router-dom'
-import api from '@/lib/axios'
+import Alert from '@mui/material/Alert'
+import { Link, useNavigate } from 'react-router-dom'
+import useUser from '@/hooks/useUser'
 
 export function SignIn() {
+  const navigate = useNavigate()
+  const { signin } = useUser()
+  const [error, setError] = React.useState(false)
+
   const handleSubmit = async (event: React.ChangeEvent<HTMLFormElement>) => {
     event.preventDefault()
-    const { email, password } = event.target as HTMLFormElement
 
-    const response = await api.user.login({
-      email: email.value,
-      password: password.value,
-    })
-
-    console.log(response.data)
+    try {
+      const { email, password } = event.target as HTMLFormElement
+      await signin(email.value, password.value)
+      setError(false)
+      navigate('/dashboard')
+    } catch {
+      setError(true)
+    }
   }
 
   return (
@@ -44,6 +50,9 @@ export function SignIn() {
           Login
         </Typography>
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          {error && (
+            <Alert severity="error">E-mail e/ou senha incorretos.</Alert>
+          )}
           <TextField
             required
             fullWidth

@@ -9,6 +9,14 @@ export declare global {
     createdAt: Date
     updatedAt: Date
   }
+  interface IUser extends IEntity {
+    name: string
+    email: string
+    image: Blob
+    role: 'ADMINISTRATOR' | 'COORDINATOR' | 'MONITOR' | 'STUDENT'
+    role_id: number
+  }
+
   interface ISchool extends IEntity {
     name: string
     cnpj: string
@@ -56,5 +64,7 @@ export declare global {
   type LoginResponse = {
     status: string
     token: string
+    name: string
+    user: IUser
   }
 }
