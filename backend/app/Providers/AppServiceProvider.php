@@ -15,6 +15,7 @@ use App\Repositories\Contracts\ActivityRepositoryInterface;
 use App\Repositories\Contracts\ClassesRepositoryInterface;
 use App\Repositories\Contracts\ClassStudentRepositoryInterface;
 use App\Repositories\Contracts\ClassTeacherRepositoryInterface;
+use App\Repositories\Contracts\LessonPlanRepositoryInterface;
 use App\Repositories\Contracts\SchoolRepositoryInterface;
 use App\Repositories\Contracts\StudentActivityRepositoryInterface;
 use App\Repositories\Eloquent\AccountRepository;
@@ -23,6 +24,7 @@ use App\Repositories\Eloquent\ActivityRepository;
 use App\Repositories\Eloquent\ClassesRepository;
 use App\Repositories\Eloquent\ClassStudentRepository;
 use App\Repositories\Eloquent\ClassTeacherRepository;
+use App\Repositories\Eloquent\LessonPlanRepository;
 use App\Repositories\Eloquent\SchoolRepository;
 use App\Repositories\Eloquent\StudentActivityRepository;
 use App\Repositories\Eloquent\VerificationCodeRepository;
@@ -48,6 +50,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(VerificationCodeRepositoryInterface::class, VerificationCodeRepository::class);
         $this->app->bind(ActivityRepositoryInterface::class, ActivityRepository::class);
         $this->app->bind(StudentActivityRepositoryInterface::class, StudentActivityRepository::class);
+        $this->app->bind(LessonPlanRepositoryInterface::class, LessonPlanRepository::class);
     }
 
     /**
@@ -55,21 +58,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        /*// Defina as permissões baseadas nos papéis
-        Gate::define('manage-admin', function ($user) {
-            return $user->role === 'ADMINISTRATOR';
-        });
-
-        Gate::define('manage-coordinator', function ($user) {
-            return in_array($user->role, ['ADMINISTRATOR', 'COORDINATOR']);
-        });
-
-        Gate::define('manage-monitor', function ($user) {
-            return in_array($user->role, ['ADMINISTRATOR', 'COORDINATOR', 'MONITOR']);
-        });
-
-        Gate::define('view-student-content', function ($user) {
-            return in_array($user->role, ['ADMINISTRATOR', 'COORDINATOR', 'MONITOR', 'STUDENT']);
-        });*/
+        
     }
 }
