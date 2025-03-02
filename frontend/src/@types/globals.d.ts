@@ -9,7 +9,6 @@ export declare global {
     createdAt: Date
     updatedAt: Date
   }
-
   interface ISchool extends IEntity {
     name: string
     cnpj: string
@@ -18,7 +17,6 @@ export declare global {
     phone?: string
     accountId: number
   }
-
   interface IClass extends IEntity {
     name: string
     shift: 'MORNING' | 'AFTERNOON' | 'EVENING' | 'NIGHT'
@@ -26,7 +24,6 @@ export declare global {
     accountId: number
     schoolId: number
   }
-
   interface IActivity extends IEntity {
     title: string
     description: string
@@ -43,7 +40,6 @@ export declare global {
     email: string
     phone?: string
   }
-
   type IUpdateSchoolData = Partial<ICreateSchoolData>
 
   type ICreateClassData = {
@@ -51,6 +47,14 @@ export declare global {
     shift: 'MORNING' | 'AFTERNOON' | 'EVENING' | 'NIGHT'
     academicYear: string
   }
-
   type IUpdateClassData = Partial<ICreateClassData>
+
+  type LoginRequest = {
+    email: string
+    password: string
+  }
+  type LoginResponse = {
+    status: string
+    token: string
+  }
 }
