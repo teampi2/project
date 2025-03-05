@@ -1,9 +1,14 @@
-import Home from '@/pages/Home'
+import NotFound from '@/404'
+import SignIn from '@/pages/SignIn'
 
 const routes: IRoute[] = [
   {
-    path: '/',
-    element: <Home />,
+    path: '/signin',
+    element: <SignIn />,
+  },
+  {
+    path: '*',
+    element: <NotFound />,
   },
 ]
 

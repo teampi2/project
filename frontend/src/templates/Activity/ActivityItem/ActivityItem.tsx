@@ -11,8 +11,10 @@ import ListItemAvatar from '@mui/material/ListItemAvatar'
 import Avatar from '@mui/material/Avatar'
 import AssignmentIcon from '@mui/icons-material/AssignmentOutlined'
 import Button from '@/components/Button'
+import { Link } from 'react-router-dom'
 
 interface ActivityItemProps {
+  id: number
   name: string
   description: string
   dueDate: Date
@@ -20,7 +22,7 @@ interface ActivityItemProps {
 }
 
 export function ActivityItem(props: ActivityItemProps) {
-  const { name, description } = props
+  const { id, name, description } = props
 
   const dueDate = format(props.dueDate, "EEEE, d 'de' MMM 'de' yyyy", {
     locale: ptBR,
@@ -50,7 +52,9 @@ export function ActivityItem(props: ActivityItemProps) {
           Postada em: {date}
         </Typography>
         <Typography gutterBottom>{description}</Typography>
-        <Button size="small">Ver detalhes</Button>
+        <Link to={`/activities/${id}`}>
+          <Button size="small">Ver detalhes</Button>
+        </Link>
       </AccordionDetails>
     </Accordion>
   )

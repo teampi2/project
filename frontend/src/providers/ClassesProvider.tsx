@@ -6,8 +6,8 @@ interface ClassesProviderProps {
 }
 
 const initialValue: IClass[] = [...Array(8)].map((_, index) => ({
-  id: index,
-  name: 'Turma ' + ++index,
+  id: ++index,
+  name: 'Turma ' + index,
   shift: 'MORNING',
   academicYear: '2025.1',
   createdAt: new Date(),
@@ -56,7 +56,9 @@ export default function ClassesProvider({ children }: ClassesProviderProps) {
   }
 
   const handleFindClass = (id: number) => {
-    return classes.find((cls) => cls.id === id) || null
+    const cls = classes.find((cls) => cls.id === id) || null
+    if (cls == null) throw new Error('Class not found.')
+    return cls
   }
 
   return (

@@ -5,8 +5,11 @@ import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
 import Avatar from '@mui/material/Avatar'
 import Button from '@/components/Button'
+import useUser from '@/hooks/useUser'
 
 export function ProfileSettings() {
+  const { signout } = useUser()
+
   return (
     <Card>
       <CardHeader title={<Typography variant="h4">Perfil</Typography>} />
@@ -26,6 +29,10 @@ export function ProfileSettings() {
         <br />
         <Button uppercase color="secondary">
           Alterar Senha
+        </Button>
+        <br />
+        <Button uppercase color="secondary" onClick={signout}>
+          Sair da conta
         </Button>
       </CardContent>
     </Card>

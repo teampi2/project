@@ -17,7 +17,7 @@ const TabPanel = styled(MuiTabPanel)(({ theme }) => ({
   },
 }))
 
-export function ActivitiesList() {
+export function ActivitiesTabs() {
   const [value, setValue] = React.useState('1')
 
   const handleChange = (_: React.SyntheticEvent, newValue: string) => {
